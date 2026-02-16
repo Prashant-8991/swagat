@@ -22,15 +22,15 @@ const LayoutContent: React.FC = () => {
           className={`flex-1 transition-all duration-300 ease-in-out ${isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
             } ${isMobileOpen ? "ml-0" : ""}`}
         >
-          <div className="sticky top-0 z-50 bg-white shadow-sm">
+          <div className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-gray-200/30 dark:bg-gray-900/60 dark:border-gray-700/40">
             <AppHeader />
           </div>
 
-          <div className="flex flex-col gap-4">
-            <div className="absolute left-0 bottom-[100px] z-[111111]">
-              <SessionTimer />
-            </div>
-            <div>
+          <div className="flex flex-col min-h-[calc(100vh-64px)]">
+            {/* <div className="absolute left-0 bottom-[100px] z-[111111]">
+ <SessionTimer />
+ </div> */}
+            <div className="flex-1">
               <Outlet />
             </div>
           </div>

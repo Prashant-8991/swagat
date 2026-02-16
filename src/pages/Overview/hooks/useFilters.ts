@@ -5,72 +5,72 @@ import { setgSwagatData } from '../../../redux/features/globalfilters';
 import { FilterState } from '../types';
 
 export function useFilters() {
-  const dispatch = useAppDispatch();
+ const dispatch = useAppDispatch();
 
-  const [filters, setFilters] = useState<FilterState>({
-    district: null,
-    departmentName: null,
-    disposeChnl: null,
-    grievanceStatus: null,
-    programTypes: null
-  });
+ const [filters, setFilters] = useState<FilterState>({
+ district: null,
+ departmentName: null,
+ disposeChnl: null,
+ grievanceStatus: null,
+ programTypes: null
+ });
 
-  const [activeProgramTypes, setActiveProgramTypes] = useState<string[]>([]);
+ const [activeProgramTypes, setActiveProgramTypes] = useState<string[]>([]);
 
-  const updateFilter = (key: keyof FilterState, value: string | string[] | null) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
+ const updateFilter = (key: keyof FilterState, value: string | string[] | null) => {
+ setFilters(prev => ({ ...prev, [key]: value }));
+ };
 
-  const handleProgramTypeClick = (type: string | null) => {
-    if (type === null) {
+ const handleProgramTypeClick = (type: string | null) => {
+ if (type === null) {
 
-      setActiveProgramTypes([]);
-      updateFilter('programTypes', null);
-      return;
-    }
+ setActiveProgramTypes([]);
+ updateFilter('programTypes', null);
+ return;
+ }
 
-    setActiveProgramTypes(prev => {
-      const newTypes = prev.includes(type)
-        ? prev.filter(t => t !== type)
-        : [...prev, type];
+ setActiveProgramTypes(prev => {
+ const newTypes = prev.includes(type)
+ ? prev.filter(t => t !== type)
+ : [...prev, type];
 
 
-      updateFilter('programTypes', newTypes.length > 0 ? newTypes : null);
+ updateFilter('programTypes', newTypes.length > 0 ? newTypes : null);
 
-      return newTypes;
-    });
-  };
+ return newTypes;
+ });
+ };
 
-  const clearAllFilters = () => {
+ const clearAllFilters = () => {
 
-    setFilters({
-      district: null,
-      departmentName: null,
-      disposeChnl: null,
-      grievanceStatus: null,
-      programTypes: null
-    });
-    setActiveProgramTypes([]);
+ setFilters({
+ district: null,
+ departmentName: null,
+ disposeChnl: null,
+ grievanceStatus: null,
+ programTypes: null
+ });
+ setActiveProgramTypes([]);
 
-    dispatch(setgSwagatData({
-      programTypes: [],
-      districts: [],
-      talukas: [],
-      departments: [],
-      grievanceStatuses: [],
-      subStatuses: [],
-      disposeChannels: []
-    }));
-  };
+ dispatch(setgSwagatData({
+ programTypes: [],
+ districts: [],
+ talukas: [],
+ departments: [],
+ grievanceStatuses: [],
+ subStatuses: [],
+ disposeChannels: []
+ }));
+ };
 
-  const hasActiveFilters = Object.values(filters).some(v => v !== null);
+ const hasActiveFilters = Object.values(filters).some(v => v !== null);
 
-  return {
-    filters,
-    activeProgramTypes,
-    updateFilter,
-    handleProgramTypeClick,
-    clearAllFilters,
-    hasActiveFilters
-  };
+ return {
+ filters,
+ activeProgramTypes,
+ updateFilter,
+ handleProgramTypeClick,
+ clearAllFilters,
+ hasActiveFilters
+ };
 }

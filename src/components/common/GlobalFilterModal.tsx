@@ -17,7 +17,7 @@ interface GlobalFilterModalProps {
 const PROGRAM_TYPES = [
   { value: 'GS', label: 'GS', color: 'from-blue-600 to-blue-700' },
   { value: 'TS', label: 'TS', color: 'from-green-600 to-green-700' },
-  { value: 'DS', label: 'DS', color: 'from-purple-600 to-purple-700' },
+  { value: 'DS', label: 'DS', color: 'from-teal-600 to-teal-700' },
   { value: 'LF', label: 'LF', color: 'from-orange-600 to-orange-700' },
   { value: 'RLF', label: 'RLF', color: 'from-red-600 to-red-700' },
   { value: 'WTC', label: 'WTC', color: 'from-pink-600 to-pink-700' },
@@ -198,7 +198,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
         <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-10">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600 dark:text-indigo-400">
+              <div className="bg-teal-100 dark:bg-teal-900/30 p-2 rounded-lg text-teal-600 dark:text-teal-400">
                 <HiFunnel className="w-5 h-5" />
               </div>
               <div>
@@ -237,7 +237,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   Program Type
                 </h3>
                 {globalFilters.programTypes.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                     {globalFilters.programTypes.length} Selected
                   </span>
                 )}
@@ -256,8 +256,8 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                       className={`
                         relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 flex items-center justify-center overflow-hidden group
                         ${isActive
-                          ? `bg-gradient-to-br ${type.color} text-white shadow-lg shadow-indigo-500/20`
-                          : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                          ? `bg-gradient-to-br ${type.color} text-white shadow-lg shadow-teal-500/20`
+                          : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                         }
                       `}
                     >
@@ -284,7 +284,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   Grievance Status
                 </h3>
                 {globalFilters.grievanceStatuses.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                     {globalFilters.grievanceStatuses[0]}
                   </span>
                 )}
@@ -305,8 +305,8 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                         className={`
                           px-3 py-1.5 rounded-full font-medium text-xs transition-all duration-200 border
                           ${globalFilters.grievanceStatuses.includes(status)
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md transform scale-105'
-                            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/10'
+                            ? 'bg-teal-600 text-white border-teal-600 shadow-md transform scale-105'
+                            : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/10'
                           }
                         `}
                       >
@@ -331,7 +331,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   Sub Status
                 </h3>
                 {globalFilters.subStatuses.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                     {globalFilters.subStatuses.length} Selected
                   </span>
                 )}
@@ -352,8 +352,8 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                         className={`
                           px-3 py-1.5 rounded-full font-medium text-xs transition-all duration-200 border
                           ${globalFilters.subStatuses.includes(status)
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md transform scale-105'
-                            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/10'
+                            ? 'bg-teal-600 text-white border-teal-600 shadow-md transform scale-105'
+                            : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/10'
                           }
                         `}
                       >
@@ -378,7 +378,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   Dispose Channel
                 </h3>
                 {globalFilters.disposeChannels.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                     {globalFilters.disposeChannels[0]}
                   </span>
                 )}
@@ -399,8 +399,8 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                         className={`
                           px-3 py-1.5 rounded-full font-medium text-xs transition-all duration-200 border
                           ${globalFilters.disposeChannels.includes(channel)
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md transform scale-105'
-                            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/10'
+                            ? 'bg-teal-600 text-white border-teal-600 shadow-md transform scale-105'
+                            : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/10'
                           }
                         `}
                       >
@@ -425,7 +425,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   District
                 </h3>
                 {globalFilters.districts.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                     {globalFilters.districts[0]}
                   </span>
                 )}
@@ -442,7 +442,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                     placeholder="Search district..."
                     value={districtSearch}
                     onChange={(e) => setDistrictSearch(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 backdrop-blur-sm dark:bg-gray-700/40 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
                   />
                 </div>
 
@@ -466,7 +466,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                           className={`
                             w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200
                             ${globalFilters.districts.includes(district)
-                              ? 'bg-indigo-600 text-white font-medium shadow-md'
+                              ? 'bg-teal-600 text-white font-medium shadow-md'
                               : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                             }
                           `}
@@ -494,7 +494,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                     Taluka
                   </h3>
                   {globalFilters.talukas.length > 0 && (
-                    <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium">
+                    <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium">
                       {globalFilters.talukas.length} Selected
                     </span>
                   )}
@@ -511,7 +511,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                       placeholder="Search taluka..."
                       value={talukaSearch}
                       onChange={(e) => setTalukaSearch(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 backdrop-blur-sm dark:bg-gray-700/40 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
@@ -535,7 +535,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                             className={`
                               w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200
                               ${globalFilters.talukas.includes(taluka)
-                                ? 'bg-indigo-600 text-white font-medium shadow-md'
+                                ? 'bg-teal-600 text-white font-medium shadow-md'
                                 : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                               }
                             `}
@@ -563,7 +563,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                   Department
                 </h3>
                 {globalFilters.departments.length > 0 && (
-                  <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium truncate max-w-[100px]">
+                  <span className="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full font-medium truncate max-w-[100px]">
                     {globalFilters.departments[0]}
                   </span>
                 )}
@@ -580,7 +580,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                     placeholder="Search department..."
                     value={departmentSearch}
                     onChange={(e) => setDepartmentSearch(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 backdrop-blur-sm dark:bg-gray-700/40 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
                   />
                 </div>
 
@@ -604,7 +604,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
                           className={`
                             w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 truncate
                             ${globalFilters.departments.includes(department)
-                              ? 'bg-indigo-600 text-white font-medium shadow-md'
+                              ? 'bg-teal-600 text-white font-medium shadow-md'
                               : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                             }
                           `}
@@ -628,7 +628,7 @@ export default function GlobalFilterModal({ isOpen, onClose }: GlobalFilterModal
         <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky bottom-0 z-10">
           <button
             onClick={onClose}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/30 transition-all active:scale-95"
+            className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-teal-500/30 transition-all active:scale-95"
           >
             Apply Filters
           </button>

@@ -7,15 +7,15 @@ const LazySubjectCategory = lazy(() => import("./SubjectCategory"));
 
 
 export default function SubjectCategoryPage() {
-  return (
-    <>
-      <PageMeta
-        title="Grievance Overview Dashboard | Swagat Analytics"
-        description="Comprehensive grievance analytics dashboard with KPIs, cross-filtering, and interactive visualizations for districts, departments, channels, and statuses"
-      />
-      <Suspense fallback={<div>Loading...</div>}>
-        <LazySubjectCategory />
-      </Suspense>
-    </>
-  );
+ return (
+ <>
+ <PageMeta
+ title="Grievance Overview Dashboard | Swagat Analytics"
+ description="Comprehensive grievance analytics dashboard with KPIs, cross-filtering, and interactive visualizations for districts, departments, channels, and statuses"
+ />
+ <Suspense fallback={<div>Loading...</div>}>
+ <LazySubjectCategory />
+ </Suspense>
+ </>
+ );
 }

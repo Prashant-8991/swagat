@@ -23,73 +23,73 @@ const LazyReviewed = lazy(() => import("./pages/Reviewed"));
 
 
 export default function App() {
-  return (
-    <>
-      {/* <Router basename="/Swagat_AI/"> */}
-      <Router basename={import.meta.env.VITE_BASE_NAME}>
+ return (
+ <>
+ {/* <Router basename="/Swagat_AI/"> */}
+ <Router basename={import.meta.env.VITE_BASE_NAME}>
 
-        {/* SessionProvider wraps everything to provide session context */}
-        <SessionProvider>
+ {/* SessionProvider wraps everything to provide session context */}
+ <SessionProvider>
 
-          {/* SessionWatcher handles the popup modal */}
-          <SessionWatcher />
+ {/* SessionWatcher handles the popup modal */}
+ <SessionWatcher />
 
-          <ScrollToTop />
-          <Suspense fallback={<CustomLoader />}>
-            <Routes>
-              <Route path="/" element={<Navigate to="dashboard" replace />} />
-              <Route element={<AppLayout />}>
-                <Route index path="/" element={
-                  <LazyOverview />
-                } />
-                <Route path="/overview" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyOverview />
-                  </Suspense>
-                </>} />
-                <Route path="/subject-category" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <SubjectCategoryPage />
-                  </Suspense>
-                </>} />
-                <Route path="/level-wise-designation-analysis" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyLevelWise />
-                  </Suspense>
-                </>} />
-                <Route path="/disposed-grievance" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyPositiveDispose />
-                  </Suspense>
-                </>} />
-                <Route path="/escalated-by-citizen" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyEscalated />
-                  </Suspense>
-                </>} />
-                <Route path="/drill-down" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyDrillThroughComponent />
-                  </Suspense>
-                </>} />
-                <Route path="/reviewed" element={<>
-                  <Suspense fallback={<CustomLoader />}>
-                    <LazyReviewed />
-                  </Suspense>
-                </>} />
-                <Route path="/search/:searchQuery"
-                  element={
-                    <SearchQueryPage />
-                  }
-                />
-              </Route>
-              {/* <Route path="*" element={<NotFound />} /> */}
-            </Routes>
-          </Suspense>
+ <ScrollToTop />
+ <Suspense fallback={<CustomLoader />}>
+ <Routes>
+ <Route path="/" element={<Navigate to="dashboard" replace />} />
+ <Route element={<AppLayout />}>
+ <Route index path="/" element={
+ <LazyOverview />
+ } />
+ <Route path="/overview" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyOverview />
+ </Suspense>
+ </>} />
+ <Route path="/subject-category" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <SubjectCategoryPage />
+ </Suspense>
+ </>} />
+ <Route path="/level-wise-designation-analysis" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyLevelWise />
+ </Suspense>
+ </>} />
+ <Route path="/disposed-grievance" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyPositiveDispose />
+ </Suspense>
+ </>} />
+ <Route path="/escalated-by-citizen" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyEscalated />
+ </Suspense>
+ </>} />
+ <Route path="/drill-down" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyDrillThroughComponent />
+ </Suspense>
+ </>} />
+ <Route path="/reviewed" element={<>
+ <Suspense fallback={<CustomLoader />}>
+ <LazyReviewed />
+ </Suspense>
+ </>} />
+ <Route path="/search/:searchQuery"
+ element={
+ <SearchQueryPage />
+ }
+ />
+ </Route>
+ {/* <Route path="*" element={<NotFound />} /> */}
+ </Routes>
+ </Suspense>
 
-        </SessionProvider>
+ </SessionProvider>
 
-      </Router>
-    </>
-  );
+ </Router>
+ </>
+ );
 }
