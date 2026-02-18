@@ -29,10 +29,9 @@ export default function GlobalFilterButton() {
           onClick={() => setIsModalOpen(true)}
           className={`
             h-14 w-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300
-            bg-gray-900 text-white
-            dark:bg-white dark:text-gray-900
-            border border-white/10 dark:border-gray-200/50
-            backdrop-blur-sm group hover:shadow-brand-500/25
+            bg-primary text-primary-foreground
+            border border-primary/20
+            backdrop-blur-sm group hover:shadow-primary/40 hover:scale-105 active:scale-95
           `}
           aria-label="Open Global Filters"
         >
@@ -47,7 +46,7 @@ export default function GlobalFilterButton() {
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="absolute -top-1 -right-1 h-6 w-6 bg-brand-500 text-white text-[11px] font-bold rounded-full flex items-center justify-center border-[3px] border-white dark:border-gray-900 shadow-sm"
+                className="absolute -top-1 -right-1 h-6 w-6 bg-destructive text-destructive-foreground text-[11px] font-bold rounded-full flex items-center justify-center border-[3px] border-background shadow-sm"
               >
                 {activeFilterCount}
               </motion.span>

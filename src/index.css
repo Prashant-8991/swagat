@@ -5,13 +5,84 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 98%;
+    /* #fafafa */
+    --foreground: 20 14% 4%;
+    /* #0a0a0a */
+    --card: 0 0% 100%;
+    --card-foreground: 20 14% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14% 4%;
+    --primary: 24.6 95% 53.1%;
+    /* Orange Brand */
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 24.6 95% 53.1%;
+    --radius: 1rem;
+
+    /* Sidebar specific */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 240 5% 64.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    /* Deep Dark Blue equivalent */
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 24.6 95% 53.1%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 24.6 95% 53.1%;
+
+    /* Sidebar specific dark */
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
 
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--border);
   }
 
   button:not(:disabled),
@@ -20,20 +91,28 @@
   }
 
   body {
-    @apply relative font-normal text-gray-700 antialiased;
+    @apply relative font-normal text-foreground antialiased;
     font-family: 'Outfit', 'Inter', system-ui, sans-serif;
-    /* Sophisticated Mesh Gradient Background */
+    /* Enhanced "Ball" Background Effect - Light Mode */
     background-color: #fafafa;
     background-image:
-      radial-gradient(at 0% 0%, hsla(24, 100%, 96%, 1) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(180, 100%, 98%, 1) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(24, 100%, 98%, 1) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, hsla(180, 100%, 98%, 1) 0px, transparent 50%);
+      radial-gradient(circle at 0% 0%, hsla(24, 100%, 92%, 0.8) 0%, transparent 50%),
+      radial-gradient(circle at 100% 0%, hsla(190, 90%, 92%, 0.7) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, hsla(280, 70%, 94%, 0.6) 0%, transparent 50%),
+      radial-gradient(circle at 0% 100%, hsla(160, 70%, 93%, 0.6) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, hsla(35, 100%, 94%, 0.4) 0%, transparent 50%);
     background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.015em;
+  }
+
+  .dark body {
+    background-color: #020817;
+    /* Slate 950 */
+    background-image: linear-gradient(to bottom right, #0f172a, #020617);
+    /* Uniform Dark Gradient */
   }
 }
 
@@ -44,20 +123,40 @@
     @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-glass;
   }
 
+  .dark .glass {
+    @apply bg-gray-950/70 border-white/10 shadow-none;
+  }
+
   .glass-card {
     @apply bg-white/60 backdrop-blur-md border border-white/60 shadow-card rounded-3xl transition-all duration-300;
+  }
+
+  .dark .glass-card {
+    @apply bg-gray-900/60 border-white/10 shadow-none;
   }
 
   .glass-card:hover {
     @apply bg-white/80 shadow-card-hover -translate-y-1;
   }
 
+  .dark .glass-card:hover {
+    @apply bg-gray-900/80 border-white/20;
+  }
+
   .glass-strong {
     @apply bg-white/85 backdrop-blur-2xl border-b border-white/50 shadow-sm;
   }
 
+  .dark .glass-strong {
+    @apply bg-gray-950/85 border-white/10;
+  }
+
   .glass-subtle {
     @apply bg-white/40 backdrop-blur-lg border border-white/30;
+  }
+
+  .dark .glass-subtle {
+    @apply bg-gray-900/40 border-white/5;
   }
 
   /* Dark mode variants handled via dark: modifier mostly, but here if needed */
@@ -67,16 +166,15 @@
 
   /* ===== DASHBOARD CARDS ===== */
   .dashboard-card {
-    @apply glass-card relative overflow-hidden;
+    @apply bg-card text-card-foreground border border-border shadow-sm rounded-xl relative overflow-hidden transition-all duration-200;
   }
 
-  .dashboard-card::before {
-    content: "";
-    @apply absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none opacity-50;
+  .dashboard-card:hover {
+    @apply shadow-md border-border/80;
   }
 
   .dashboard-card-static {
-    @apply bg-white/60 backdrop-blur-md border border-white/60 shadow-card rounded-3xl;
+    @apply bg-card border border-border shadow-sm rounded-xl;
   }
 
   /* ===== SIDEBAR MENU ===== */
@@ -127,8 +225,16 @@
     @apply inline-flex items-center gap-1.5 px-3 py-1 bg-white/80 border border-gray-200/50 shadow-sm rounded-full text-xs font-medium text-gray-700 transition-all hover:shadow-md;
   }
 
+  .dark .filter-tag {
+    @apply bg-gray-800/80 border-gray-700/50 text-gray-300;
+  }
+
   .filter-tag-remove {
     @apply ml-1 opacity-50 hover:opacity-100 rounded-full p-0.5 hover:bg-gray-200;
+  }
+
+  .dark .filter-tag-remove {
+    @apply hover:bg-gray-700;
   }
 
   /* ===== SCROLLBAR ===== */
@@ -156,11 +262,11 @@
 
   /* ===== SECTION HEADINGS ===== */
   .section-title {
-    @apply text-2xl font-bold text-gray-900 tracking-tight;
+    @apply text-2xl font-bold text-foreground tracking-tight;
   }
 
   .section-subtitle {
-    @apply text-sm font-semibold text-gray-500 uppercase tracking-widest;
+    @apply text-sm font-semibold text-muted-foreground uppercase tracking-widest;
   }
 }
 
@@ -208,6 +314,14 @@
   @apply !mb-0 !border-b-0 !bg-transparent !p-0 !text-[10px] !leading-4 !text-gray-900 !font-bold font-outfit;
 }
 
+.dark .apexcharts-tooltip-title {
+  @apply !text-gray-100;
+}
+
 .apexcharts-tooltip-text {
   @apply !text-theme-xs !text-gray-600 font-outfit;
+}
+
+.dark .apexcharts-tooltip-text {
+  @apply !text-gray-300;
 }

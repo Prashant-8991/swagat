@@ -1,11 +1,10 @@
-//@ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { useSidebar } from "../context/SidebarContext";
-import { LogOut, Menu, X, MoreHorizontal } from "lucide-react";
+import { LogOut, Menu, X, Rocket, Search, Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 
 const AppHeader: React.FC = () => {
-    const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
     const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
     const handleLogoutClick = async () => {
@@ -26,10 +25,6 @@ const AppHeader: React.FC = () => {
         }
     };
 
-    const toggleApplicationMenu = () => {
-        setApplicationMenuOpen(!isApplicationMenuOpen);
-    };
-
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -46,78 +41,58 @@ const AppHeader: React.FC = () => {
     }, []);
 
     return (
-        <header className="sticky top-0 flex w-full z-99999">
-            <div className="flex items-center justify-between w-full px-3 py-3 lg:px-6 lg:py-4">
-                {/* Left: Toggle button */}
-                <div className="flex items-center gap-4">
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center justify-center w-10 h-10 text-gray-500 rounded-xl border border-gray-200/50 dark:border-gray-700 dark:text-gray-400 lg:h-11 lg:w-11 hover:bg-white/60 dark:hover:bg-gray-800 transition-all duration-200"
-                        onClick={handleToggle}
-                        aria-label="Toggle Sidebar"
-                    >
-                        <AnimatePresence mode="wait">
-                            {isMobileOpen ? (
-                                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                                    <X size={20} strokeWidth={1.8} />
-                                </motion.div>
-                            ) : (
-                                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                                    <Menu size={20} strokeWidth={1.8} />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </motion.button>
+        <header className="sticky top-0 z-30 flex h-16 w-full items-center gap-4 bg-background/80 px-6 backdrop-blur-xl transition-all">
+            <div className="flex items-center gap-2 lg:hidden">
+                <button
+                    onClick={handleToggle}
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9"
+                >
+                    {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                    <span className="sr-only">Toggle Menu</span>
+                </button>
+            </div>
 
-                    <div className="lg:hidden text-xl font-bold text-gray-800 dark:text-white tracking-tight select-none whitespace-nowrap">
-                        S.W.A.G.A.T
-                    </div>
+            <div className="flex items-center gap-2">
+                <div className="hidden lg:flex items-center gap-1 text-sm font-medium text-muted-foreground/80">
+                    <Rocket className="mr-2 h-4 w-4 text-primary" />
+                    <span className="text-foreground">S.W.A.G.A.T</span>
+                    <span className="mx-2 text-muted-foreground/30">/</span>
+                    <span className="text-foreground">Overview</span>
+                </div>
+            </div>
+
+            <div className="flex flex-1 items-center justify-end gap-4">
+                <div className="relative hidden w-full max-w-sm lg:flex items-center">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    <input
+                        ref={inputRef}
+                        type="search"
+                        placeholder="Search grievances... (Ctrl + K)"
+                        className="flex h-9 w-full rounded-md border border-input bg-background/50 pl-9 pr-10 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                    <kbd className="pointer-events-none absolute right-2.5 top-2.5 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                        <span className="text-xs">Ctrl</span>K
+                    </kbd>
                 </div>
 
-                {/* Center: Full title (desktop only) */}
-                <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="hidden lg:flex items-center flex-1 justify-center"
-                >
-                    <span className="text-2xl font-semibold text-gray-700 dark:text-white tracking-tight select-none whitespace-nowrap">
-                        <span className="text-brand-500 font-bold">S</span>
-                        <span className="text-gray-400 font-light">tate</span>{" "}
-                        <span className="text-brand-500 font-bold">W</span>
-                        <span className="text-gray-400 font-light">ide</span>{" "}
-                        <span className="text-brand-500 font-bold">A</span>
-                        <span className="text-gray-400 font-light">ttention on</span>{" "}
-                        <span className="text-brand-500 font-bold">G</span>
-                        <span className="text-gray-400 font-light">rievances by</span>{" "}
-                        <span className="text-brand-500 font-bold">A</span>
-                        <span className="text-gray-400 font-light">pplication of</span>{" "}
-                        <span className="text-brand-500 font-bold">T</span>
-                        <span className="text-gray-400 font-light">echnology</span>
-                        <span className="ml-2 text-sm font-medium text-gray-400/80 tracking-wide">Dashboard</span>
-                    </span>
-                </motion.div>
+                <ThemeToggleButton />
 
-                {/* Right: Logout + Mobile menu */}
+                <button className="relative inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9">
+                    <Bell className="h-4 w-4" />
+                    <span className="absolute top-2 right-2.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-background" />
+                    <span className="sr-only">Notifications</span>
+                </button>
+
+                <div className="h-4 w-px bg-border/60 mx-1 hidden sm:block"></div>
+
                 <div className="flex items-center gap-2">
-                    <motion.button
-                        whileTap={{ scale: 0.95 }}
-                        onClick={toggleApplicationMenu}
-                        className="flex items-center justify-center w-10 h-10 text-gray-600 rounded-xl hover:bg-white/60 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden transition-all duration-200"
-                    >
-                        <MoreHorizontal size={20} strokeWidth={1.8} />
-                    </motion.button>
-
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.92 }}
+                    <button
                         onClick={handleLogoutClick}
-                        className="p-2.5 rounded-xl bg-gray-800 hover:bg-gray-900 text-white transition-all duration-200 shadow-sm"
-                        aria-label="Logout"
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
                     >
-                        <LogOut size={16} strokeWidth={2} />
-                    </motion.button>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log out
+                    </button>
                 </div>
             </div>
         </header>

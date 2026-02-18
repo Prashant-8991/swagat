@@ -8,9 +8,7 @@ import { useGlobalFilters } from '../../hooks/useGlobalFilters';
 import { useAppSelector } from '../../redux/hooks';
 import ContextMenu from '../../components/common/ContextMenu';
 import GlobalFilterButton from '../../components/common/GlobalFilterButton';
-import KPICard, { TotalGrievancesCard } from './components/KPICards/KPICard';
 import OverviewMetrics from './components/KPICards/OverviewMetrics';
-import KPICardWithTrend from './components/KPICards/KPICardWithTrend';
 import ChartCard from './components/Charts/ChartCard';
 import DistrictTreeMap from './components/Charts/DistrictTreeMap';
 import DepartmentTreeMap from './components/Charts/DepartmentTreeMap';
@@ -196,12 +194,12 @@ export default function OverviewComponent() {
                 onDrillThrough={handleDrillThrough}
             />
             {/* Header Section */}
-            <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight font-display mb-1">
+                    <h1 className="text-3xl font-extrabold text-foreground tracking-tight font-display mb-1">
                         Overview
                     </h1>
-                    <p className="text-sm text-gray-500 font-medium">Welcome back, here's what's happening today.</p>
+                    <p className="text-sm text-muted-foreground font-medium">Welcome back, here's what's happening today.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <DateRangeFilter />
@@ -209,9 +207,9 @@ export default function OverviewComponent() {
             </div>
 
             {/* Program Type Filter Bar */}
-            <div className="mb-6 p-1.5 rounded-2xl glass-strong border border-white/60 shadow-sm flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2 px-3 pl-4 border-r border-gray-200/50 pr-4 py-1.5">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <div className="mb-6 rounded-2xl bg-gradient-to-r from-white/80 via-white/60 to-white/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 shadow-sm p-4 flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2 px-3 border-r border-gray-200 dark:border-gray-700 pr-4 py-1.5">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                         Program
                     </span>
                 </div>

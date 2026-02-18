@@ -16,7 +16,10 @@ interface StickyMiniActiveFiltersProps {
 
 function MiniTag({ label, value, onRemove, dark = false }: { label: string; value: string; onRemove: () => void; dark?: boolean }) {
     return (
-        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 border shadow-sm ${dark ? 'bg-gray-800 text-white border-gray-700' : 'bg-white text-gray-700 border-gray-200'}`}>
+        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 border shadow-sm transition-colors ${dark
+            ? 'bg-gray-800 text-white border-gray-700 dark:bg-gray-700 dark:border-gray-600'
+            : 'bg-white text-gray-700 border-gray-200 dark:bg-secondary dark:text-secondary-foreground dark:border-border'
+            }`}>
             <span className="opacity-60 font-medium uppercase">{label}</span>
             <span>{value}</span>
             <button onClick={onRemove} className="hover:text-red-500 transition-colors ml-0.5">
@@ -71,10 +74,10 @@ export default function StickyMiniActiveFilters({
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className="fixed top-0 left-0 w-full flex justify-center z-[90] pointer-events-none"
-                    style={{ top: '88px' }}
+                    style={{ top: '72px' }}
                 >
-                    <div className="pointer-events-auto max-w-4xl w-full mx-4 glass-strong rounded-full px-2 py-1.5 flex items-center gap-2 shadow-2xl border border-white/40 ring-1 ring-black/5">
-                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0">
+                    <div className="pointer-events-auto max-w-4xl w-full mx-4 bg-background/90 backdrop-blur-xl rounded-full px-2 py-1.5 flex items-center gap-2 shadow-2xl border border-border/50 ring-1 ring-black/5">
+                        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground flex-shrink-0">
                             <Filter size={14} strokeWidth={2.5} />
                         </div>
 
@@ -137,7 +140,7 @@ export default function StickyMiniActiveFilters({
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             onClick={clearAllFilters}
-                            className="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-full text-[10px] font-bold transition-colors flex-shrink-0"
+                            className="bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 px-3 py-1.5 rounded-full text-[10px] font-bold transition-colors flex-shrink-0"
                         >
                             Clear All
                         </motion.button>

@@ -1,9 +1,9 @@
-//@ts-nocheck
-import { useEffect, useRef } from "react";
-import ReactEChartsCore from "echarts-for-react/lib/core";
-import { echarts } from "../../utils/chartConfig";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChartData } from "../../types";
 import { CHART_COLORS } from "../../../../utils/colorPalette";
+import { useTheme } from "../../../../context/ThemeContext";
+import { Info } from "lucide-react";
 
 interface DepartmentTreeMapProps {
     data: ChartData[];
@@ -12,10 +12,18 @@ interface DepartmentTreeMapProps {
     selectedValue: string | null;
 }
 
-const COLOR_PALETTE = [
-    "#7EAEC4", "#9BBB9E", "#F0B89A", "#8FA3B0", "#89C4B0",
-    "#D4A953", "#E89B8B", "#A0B88C", "#C78D6B", "#E8B4B8",
+// Beautiful palettes for Light and Dark modes
+const LIGHT_PALETTE = [
+    "#8EAEC4", "#A8CDB2", "#F2C7AE", "#A3B7C4", "#A2D8C6",
+    "#E6C27A", "#F0B4A8", "#B4C8A6", "#D9A88F", "#F2CCD1"
 ];
+
+const DARK_PALETTE = [
+    "#3B82F6", "#10B981", "#F59E0B", "#6366F1", "#EC4899",
+    "#8B5CF6", "#14B8A6", "#F97316", "#06B6D4", "#D946EF"
+];
+
+const COLUMN_PATTERN = [2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9];
 
 export default function DepartmentTreeMap({
     data,
@@ -23,139 +31,154 @@ export default function DepartmentTreeMap({
     onContextMenu,
     selectedValue,
 }: DepartmentTreeMapProps) {
-    const chartRef = useRef<any>(null);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+    const [hoveredData, setHoveredData] = useState<ChartData | null>(null);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-    const sortedData = [...data].sort((a, b) => b.count - a.count);
+    // Sort data
+    const sortedData = useMemo(() => {
+        return [...data].sort((a, b) => b.count - a.count);
+    }, [data]);
 
-    const treeData = sortedData.map((d, idx) => {
-        const isSelected = d.departmentName === selectedValue;
-        const baseColor = COLOR_PALETTE[idx % COLOR_PALETTE.length];
-        let tileColor = isSelected ? CHART_COLORS.primaryHover : baseColor;
-        const borderColor = isSelected ? CHART_COLORS.primaryHover : "#ffffff";
+    // Distribute into Columns
+    const columns = useMemo(() => {
+        const cols: ChartData[][] = [];
+        let currentIndex = 0;
 
-        return {
-            name: d.departmentName,
-            value: d.count,
-            itemStyle: {
-                color: tileColor,
-                borderColor: borderColor,
-                borderWidth: isSelected ? 3 : 1,
-                borderRadius: 12,
-                gapWidth: 2,
-            },
-        };
-    });
-
-    function fontApplier(): number {
-        if (window.innerWidth < 640) return 8;
-        else if (window.innerWidth < 768) return 10;
-        else if (window.innerWidth < 1024) return 11;
-        else if (window.innerWidth < 1280) return 12;
-        else return 15;
-    }
-
-    const option = {
-        tooltip: {
-            backgroundColor: "rgba(255,255,255,0.95)",
-            borderColor: "rgba(0, 0, 0, 0.06)",
-            borderWidth: 1,
-            borderRadius: 12,
-            textStyle: { color: "#374151", fontFamily: "Inter, sans-serif" },
-            formatter: (params: any) => {
-                return `
- <div style="font-weight:600; margin-bottom:4px; font-size: 13px;">
- ${params.name}
- </div>
- <div style="font-size: 12px;">Count: <strong>${params.value?.toLocaleString?.() ?? 0}</strong></div>
- <div style="font-size:11px; color:#98A2B3; margin-top:6px;">
- Click to cross filter
- </div>
- `;
+        for (const count of COLUMN_PATTERN) {
+            if (currentIndex >= sortedData.length) break;
+            const chunk = sortedData.slice(currentIndex, currentIndex + count);
+            if (chunk.length > 0) {
+                cols.push(chunk);
             }
-        },
-        series: [
-            {
-                name: "Departments",
-                type: "treemap",
-                roam: true,
-                nodeClick: false,
-                breadcrumb: { show: false },
-                data: treeData,
-                label: {
-                    show: true,
-                    formatter: (params: any) => {
-                        const name = params.name || "";
-                        const short = name.length > 18 ? name.substring(0, 18) + "..." : name;
-                        return `${short}\n${params.value?.toLocaleString?.() ?? 0}`;
-                    },
-                    color: "#ffffff",
-                    fontSize: fontApplier(),
-                    fontWeight: 600,
-                    lineHeight: 16,
-                    fontFamily: "Inter, sans-serif",
-                },
-                itemStyle: {
-                    borderWidth: 1,
-                },
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 12,
-                        shadowColor: `rgba(126, 174, 196, 0.4)`,
-                    },
-                    label: {
-                        fontSize: 14,
-                        fontWeight: "bold",
-                    },
-                },
-                animationDuration: 700,
-                animationEasing: "cubicOut",
-            },
-        ],
-    };
-
-    const onEvents = {
-        click: (params: any) => {
-            if (params.componentType === "series") {
-                const clickedValue = params.name;
-                if (selectedValue === clickedValue) {
-                    onTileClick(null);
-                } else {
-                    onTileClick(clickedValue);
-                }
-            }
-        },
-        contextmenu: (params: any) => {
-            if (params.componentType === "series") {
-                params.event.event.preventDefault();
-                params.event.event.stopPropagation();
-                onContextMenu({
-                    ...params,
-                    name: params.name,
-                });
-            }
-        },
-    };
-
-    useEffect(() => {
-        if (chartRef.current) {
-            const dom = chartRef.current.getEchartsInstance().getDom();
-            const handleContextMenu = (e: MouseEvent) => {
-                e.preventDefault();
-                e.stopPropagation();
-            };
-            dom.addEventListener("contextmenu", handleContextMenu);
-            return () => dom.removeEventListener("contextmenu", handleContextMenu);
+            currentIndex += count;
         }
-    }, []);
+
+        if (currentIndex < sortedData.length) {
+            const remaining = sortedData.slice(currentIndex);
+            if (remaining.length > 0) cols.push(remaining);
+        }
+
+        return cols;
+    }, [sortedData]);
+
+    const currentPalette = isDark ? DARK_PALETTE : LIGHT_PALETTE;
 
     return (
-        <ReactEChartsCore
-            ref={chartRef}
-            echarts={echarts}
-            option={option}
-            onEvents={onEvents}
-            style={{ height: "400px", width: "100%" }}
-            opts={{ renderer: "canvas" }}
-        />
+        <div
+            className="w-full h-[480px] p-1 select-none cursor-default"
+            onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
+            onMouseLeave={() => setHoveredData(null)}
+        >
+            <div className="flex w-full h-full gap-2 overflow-hidden">
+                {columns.map((colItems, colIdx) => (
+                    <motion.div
+                        key={`col-${colIdx}`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: colIdx * 0.05 }}
+                        className="flex flex-col flex-1 h-full gap-2 min-w-[80px]"
+                    >
+                        {colItems.map((item) => {
+                            const globalIndex = sortedData.findIndex(d => d.departmentName === item.departmentName);
+                            const color = currentPalette[globalIndex % currentPalette.length];
+
+                            const isSelected = selectedValue === item.departmentName;
+                            const isActive = hoveredData?.departmentName === item.departmentName;
+
+                            return (
+                                <motion.div
+                                    key={item.departmentName}
+                                    layoutId={item.departmentName}
+                                    onClick={() => item.departmentName && onTileClick(item.departmentName)}
+                                    onContextMenu={(e) => {
+                                        e.preventDefault();
+                                        onContextMenu({
+                                            name: item.departmentName,
+                                            value: item.count,
+                                            event: { event: e }
+                                        });
+                                    }}
+                                    onMouseEnter={() => setHoveredData(item)}
+                                    onMouseLeave={() => setHoveredData(null)}
+                                    className={`
+                                        relative flex-1 rounded-xl cursor-pointer overflow-hidden transition-all duration-300
+                                        ${isSelected ? 'ring-2 ring-offset-2 ring-primary z-10' : 'hover:scale-[1.02] hover:z-10 hover:shadow-lg'}
+                                        ${isDark ? 'ring-offset-gray-950' : 'ring-offset-white'}
+                                    `}
+                                    style={{
+                                        backgroundColor: isSelected ? (isDark ? CHART_COLORS.primary : CHART_COLORS.powder) : color,
+                                        opacity: (selectedValue && !isSelected) ? 0.6 : 1,
+                                    }}
+                                >
+                                    {/* Content Container */}
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center pointer-events-none">
+                                        <span className={`
+                                            text-xs font-bold leading-tight mb-0.5 line-clamp-2
+                                            ${isDark || isSelected ? 'text-white' : 'text-gray-800'}
+                                            ${isSelected ? 'text-white' : ''}
+                                        `}>
+                                            {item.departmentName}
+                                        </span>
+                                        <span className={`
+                                            text-[10px] font-medium opacity-90
+                                            ${isDark || isSelected ? 'text-white/80' : 'text-gray-900/70'}
+                                        `}>
+                                            {item.count.toLocaleString()}
+                                        </span>
+                                    </div>
+
+                                    {/* Shine Effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 hover:opacity-100 transition-opacity pointer-events-none" />
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
+                ))}
+            </div>
+
+            {/* Floating Tooltip */}
+            <AnimatePresence>
+                {hoveredData && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        style={{
+                            position: 'fixed',
+                            left: mousePos.x + 16,
+                            top: mousePos.y + 16,
+                            zIndex: 100,
+                            pointerEvents: 'none',
+                        }}
+                        className={`
+                            min-w-[140px] px-4 py-3 rounded-xl shadow-xl backdrop-blur-md border
+                            ${isDark
+                                ? 'bg-gray-900/95 border-gray-700 text-gray-100 shadow-black/50'
+                                : 'bg-white/95 border-gray-100 text-gray-800 shadow-gray-200/50'
+                            }
+                        `}
+                    >
+                        <p className={`text-[10px] font-bold mb-0.5 uppercase tracking-widest ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                            {hoveredData.departmentName}
+                        </p>
+                        <div className="flex items-baseline gap-1.5">
+                            <span className="text-2xl font-bold font-outfit tracking-tight">
+                                {hoveredData.count.toLocaleString()}
+                            </span>
+                            <span className={`text-xs font-medium ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                                cases
+                            </span>
+                        </div>
+                        <div className={`mt-2 text-[10px] font-medium flex items-center gap-1 ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>
+                            <Info size={10} />
+                            Right-click for options
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }

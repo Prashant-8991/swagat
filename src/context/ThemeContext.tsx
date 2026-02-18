@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { createContext, useContext, useEffect } from "react";
 
-type Theme = "light";
+type Theme = "light" | "dark";
 
 type ThemeContextType = {
     theme: Theme;
@@ -13,18 +13,32 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    // Always force light theme
-    const theme: Theme = "light";
+    const [theme, setTheme] = React.useState<Theme>("light");
 
     useEffect(() => {
-        // Ensure dark class is removed on mount and never added
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
+        const storedTheme = localStorage.getItem("theme") as Theme | null;
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        const initialTheme = storedTheme || systemTheme;
+
+        setTheme(initialTheme);
+        if (initialTheme === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
     }, []);
 
     const toggleTheme = () => {
-        // No-op: Dark mode is disabled
-        console.log("Dark mode is disabled.");
+        setTheme((prev) => {
+            const newTheme = prev === "light" ? "dark" : "light";
+            if (newTheme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+            localStorage.setItem("theme", newTheme);
+            return newTheme;
+        });
     };
 
     return (

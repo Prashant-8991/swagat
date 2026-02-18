@@ -2,90 +2,104 @@
 import React from 'react';
 
 interface OfficerRank {
- rank: number;
- officerName: string;
- escalationCount: number;
- baseLevel: number;
+    rank: number;
+    officerName: string;
+    escalationCount: number;
+    baseLevel: number;
 }
 
 interface OfficerEscalationTableProps {
- title: string;
- ranks: OfficerRank[];
- baseLevel: number;
- onBaseLevelChange: (level: number) => void;
- loading?: boolean;
+    title: string;
+    ranks: OfficerRank[];
+    baseLevel: number;
+    onBaseLevelChange: (level: number) => void;
+    loading?: boolean;
 }
 
 const OfficerEscalationTable: React.FC<OfficerEscalationTableProps> = ({
- title,
- ranks,
- baseLevel,
- onBaseLevelChange,
- loading = false
+    title,
+    ranks,
+    baseLevel,
+    onBaseLevelChange,
+    loading = false
 }) => {
- return (
- <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700 h-full flex flex-col">
- <div className="flex justify-between items-center mb-4">
- <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
- {title}
- </h3>
- <div className="flex items-center gap-2">
- <label htmlFor="base-level-select" className="text-sm font-medium text-gray-600 dark:text-gray-400">
- Base Level:
- </label>
- <select
- id="base-level-select"
- value={baseLevel}
- onChange={(e) => onBaseLevelChange(Number(e.target.value))}
- className="block pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
- >
- {[1, 2, 3, 4, 5, 6].map((level) => (
- <option key={level} value={level}>
- Level {level}
- </option>
- ))}
- </select>
- </div>
- </div>
+    return (
 
- <div className="flex-1 overflow-auto">
- {loading ? (
- <div className="flex justify-center items-center h-full">
- <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
- </div>
- ) : ranks.length === 0 ? (
- <div className="flex justify-center items-center h-full text-gray-500 dark:text-gray-400">
- No data available for this level.
- </div>
- ) : (
- <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
- <thead className="bg-white/80 backdrop-blur-sm dark:bg-gray-900">
- <tr>
- <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
- Officer Name
- </th>
- <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
- Escalations
- </th>
- </tr>
- </thead>
- <tbody className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 divide-y divide-gray-200 dark:divide-gray-700">
- {ranks.map((officer) => (
- <tr key={officer.rank} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
- <td className="px-6 py- text-sm text-gray-500 dark:text-gray-300">
- {officer.officerName}
- </td>
- <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-teal-600 dark:text-teal-400">
- {officer.escalationCount.toLocaleString()}
- </td>
- </tr>
- ))}
- </tbody>
- </table>
- )}
- </div>
- </div>
- );
+        <div className="bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 border border-white/50 dark:border-gray-700/50 h-full flex flex-col transition-all duration-300">
+            <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    {title}
+                </h3>
+                <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 border border-gray-200 dark:border-gray-600">
+                    <label htmlFor="base-level-select" className="pl-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        LEVEL:
+                    </label>
+                    <select
+                        id="base-level-select"
+                        value={baseLevel}
+                        onChange={(e) => onBaseLevelChange(Number(e.target.value))}
+                        className="bg-transparent text-sm font-bold text-gray-900 dark:text-gray-100 border-none focus:ring-0 cursor-pointer py-1 pr-8 pl-1"
+                    >
+                        {[1, 2, 3, 4, 5, 6].map((level) => (
+                            <option key={level} value={level} className="bg-white dark:bg-gray-800">
+                                {level}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            <div className="flex-1 overflow-auto custom-scrollbar pr-2">
+                {loading ? (
+                    <div className="flex justify-center items-center h-full">
+                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+                    </div>
+                ) : ranks.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                        <div className="text-4xl mb-2 opacity-50">👮‍♂️</div>
+                        <p className="font-medium">No officers found</p>
+                        <p className="text-xs mt-1">Try changing the level or filters</p>
+                    </div>
+                ) : (
+                    <table className="min-w-full divide-y divide-gray-100 dark:divide-gray-700/50">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Officer Name
+                                </th>
+                                <th scope="col" className="px-4 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Escalations
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700/50">
+                            {ranks.map((officer, index) => (
+                                <tr
+                                    key={`${officer.rank}-${index}`}
+                                    className="group hover:bg-gray-50/80 dark:hover:bg-gray-700/30 transition-colors rounded-lg"
+                                >
+                                    <td className="px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
+                                        <div className="flex items-center gap-2">
+                                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${index < 3
+                                                ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                                : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                                                }`}>
+                                                {index + 1}
+                                            </span>
+                                            {officer.officerName}
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3 whitespace-nowrap text-sm text-right font-bold text-indigo-600 dark:text-indigo-400">
+                                        {officer.escalationCount.toLocaleString()}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default OfficerEscalationTable;

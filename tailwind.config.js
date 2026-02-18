@@ -28,104 +28,78 @@ export default {
         'theme-xs': ['12px', { lineHeight: '18px' }],
       },
       colors: {
-        current: 'currentColor',
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        ring: "hsl(var(--ring) / <alpha-value>)",
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
+        primary: {
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+          foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+          foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
+          foreground: "hsl(var(--popover-foreground) / <alpha-value>)",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card) / <alpha-value>)",
+          foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background) / <alpha-value>)",
+          foreground: "hsl(var(--sidebar-foreground) / <alpha-value>)",
+          primary: "hsl(var(--sidebar-primary) / <alpha-value>)",
+          'primary-foreground': "hsl(var(--sidebar-primary-foreground) / <alpha-value>)",
+          accent: "hsl(var(--sidebar-accent) / <alpha-value>)",
+          'accent-foreground': "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
+          border: "hsl(var(--sidebar-border) / <alpha-value>)",
+          ring: "hsl(var(--sidebar-ring) / <alpha-value>)",
+        },
+
+        // Retaining brand colors for compatibility
+        brand: {
+          25: '#fefcf9',
+          50: '#fdf5ec',
+          100: '#fae6d0',
+          200: '#f5cd9f',
+          300: '#efae68',
+          400: '#ea8b38',
+          500: '#e56e18', // Primary brand
+          600: '#d95311',
+          700: '#b43f11',
+          800: '#903314',
+          900: '#742d14',
+          950: '#3f1508',
+        },
+        // Legacy colors support
         transparent: 'transparent',
         white: '#ffffff',
         black: '#101828',
-        // Pastel Brand - "Soft Peach / Coral"
-        brand: {
-          25: '#FFF9F5',
-          50: '#FFF0E6',
-          100: '#FFE1CC',
-          200: '#FFD2B3',
-          300: '#FFB380',
-          400: '#FF944D',
-          500: '#FF7A19', // More vibrant but still warm
-          600: '#E65C00',
-          700: '#B34700',
-          800: '#803300',
-          900: '#4D1F00',
-          950: '#260F00',
-        },
-        // Pastel Secondary - "Soft Teal"
-        secondary: {
-          25: '#F2FCFC',
-          50: '#E6F9F9',
-          100: '#CCF3F3',
-          200: '#99E6E6',
-          300: '#66D9D9',
-          400: '#33CCCC',
-          500: '#00BFBF',
-          600: '#009999',
-          700: '#007373',
-          800: '#004D4D',
-          900: '#002626',
-        },
-        // Surface - "Warm/Cool Grey Mix"
-        surface: {
-          50: '#F9FAFB',
-          100: '#F3F4F6',
-          200: '#E5E7EB',
-          300: '#D1D5DB',
-          400: '#9CA3AF',
-          500: '#6B7280',
-          600: '#4B5563', // Text body
-          700: '#374151', // Text headings
-          800: '#1F2937',
-          900: '#111827',
-        },
-        // Semantic Pastels
-        success: {
-          25: '#F6FEF9',
-          50: '#ECFDF3', // Pastel Green
-          100: '#D1FADF',
-          500: '#12B76A', // Vibrant for text/icons
-          600: '#039855',
-        },
-        error: {
-          25: '#FFFBFA',
-          50: '#FEF3F2', // Pastel Red
-          100: '#FEE4E2',
-          500: '#F04438',
-          600: '#D92D20',
-        },
-        warning: {
-          25: '#FFFCF5',
-          50: '#FFFAEB', // Pastel Yellow
-          100: '#FEF0C7',
-          500: '#F79009',
-          600: '#DC6803',
-        },
-        info: {
-          25: '#F5FAFF',
-          50: '#EFF8FF', // Pastel Blue
-          100: '#D1E9FF',
-          500: '#2E90FA',
-          600: '#1570EF',
-        },
-        gray: {
-          25: '#FCFCFD',
-          50: '#F9FAFB',
-          100: '#F2F4F7',
-          200: '#EAECF0',
-          300: '#D0D5DD',
-          400: '#98A2B3',
-          500: '#667085',
-          600: '#475467',
-          700: '#344054',
-          800: '#1D2939',
-          900: '#101828',
-          950: '#0C111D',
-        }
       },
       boxShadow: {
-        'glass': '0 4px 30px rgba(0, 0, 0, 0.05)',
-        'glass-sm': '0 2px 10px rgba(0, 0, 0, 0.03)',
-        'glass-lg': '0 8px 32px rgba(0, 0, 0, 0.08)',
-        'glass-inset': 'inset 0 0 0 1px rgba(255, 255, 255, 0.6)',
-        'card': '0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 0 1px rgba(0, 0, 0, 0.1)',
-        'card-hover': '0 20px 40px -8px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04)',
-        'glow': '0 0 20px rgba(255, 122, 25, 0.15)',
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04)',
+        'glass-sm': '0 2px 10px rgba(0, 0, 0, 0.03)', // Kept from original
+        'glass-lg': '0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04)',
+        'glass-inset': 'inset 0 0 0 1px rgba(255, 255, 255, 0.6)', // Kept from original
+        'card': '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.06)',
+        'card-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+        'glow': '0 0 20px rgba(255, 122, 25, 0.15)', // Kept from original
       },
       zIndex: {
         '1': '1',
@@ -137,6 +111,9 @@ export default {
         '999999': '999999',
       },
       borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
         '2xl': '1rem',
         '3xl': '1.5rem', // More rounded for modern look
         '4xl': '2rem',

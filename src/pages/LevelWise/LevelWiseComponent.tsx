@@ -362,24 +362,30 @@ function ContextMenu({
 
 function FilterBadge({ label, value, onClear, color }: any) {
     const colorClasses = {
-        purple: 'bg-slate-100 dark:bg-slate-900/50 text-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700',
-        orange: 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-300 border-orange-200 dark:border-orange-700',
-        green: 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 border-green-200 dark:border-green-700',
-        blue: 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-700',
-        indigo: 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-700',
-        cyan: 'bg-cyan-100 dark:bg-cyan-900/50 text-cyan-800 dark:text-cyan-300 border-cyan-200 dark:border-cyan-700',
-        teal: 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-700',
-        emerald: 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700'
+        purple: 'bg-indigo-50/80 text-indigo-700 border-indigo-200 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800',
+        orange: 'bg-orange-50/80 text-orange-700 border-orange-200 hover:bg-orange-100 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800',
+        green: 'bg-emerald-50/80 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800',
+        blue: 'bg-blue-50/80 text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800',
+        indigo: 'bg-indigo-50/80 text-indigo-700 border-indigo-200 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800',
+        cyan: 'bg-cyan-50/80 text-cyan-700 border-cyan-200 hover:bg-cyan-100 dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-800',
+        teal: 'bg-teal-50/80 text-teal-700 border-teal-200 hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-300 dark:border-teal-800',
+        emerald: 'bg-emerald-50/80 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800',
+        rose: 'bg-rose-50/80 text-rose-700 border-rose-200 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800',
+        amber: 'bg-amber-50/80 text-amber-700 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800'
     };
 
     return (
-        <span className={`px-3 py-1.5 rounded-lg text-sm border flex items-center gap-2 ${colorClasses[color as keyof typeof colorClasses]}`}>
-            <span className="font-medium">{label}:</span> {value}
+        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm transition-all shadow-sm flex items-center gap-1.5 ${colorClasses[color as keyof typeof colorClasses] || colorClasses.blue}`}>
+            <span className="opacity-70">{label}:</span>
+            <span className="truncate max-w-[150px]">{value}</span>
             <button
                 onClick={onClear}
-                className="hover:opacity-75 font-bold ml-1"
+                className="hover:bg-black/5 dark:hover:bg-white/10 rounded-full p-0.5 transition-colors ml-0.5"
             >
-                ✕
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
             </button>
         </span>
     );
@@ -429,40 +435,104 @@ function DownloadCsvButton({ onClick }: { onClick: () => void }) {
 
 function KPICards({ kpi, waterfallData, filters }: any) {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white relative bg-gradient-to-br dark:from-slate-900/20 dark:to-slate-800/20 transition-transform duration-300 dark:border-slate-700/50 rounded-2xl p-5 shadow-sm">
-                <div className="text-sm font-semibold text-black dark:text-white mb-2">
-                    Total Grievances
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="relative group overflow-hidden bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-blue-600 dark:text-blue-400">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
                 </div>
-                <div className=" text-4xl font-bold text-black dark:text-white mb-1">
-                    {kpi.totalCount.toLocaleString()}
-                </div>
-                <div className="text-xs text-black dark:white">
-                    {filters.programTypes.length > 0 ? `Across ${filters.programTypes.length} program types` : 'All program types'}
+                <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </span>
+                        <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Total Grievances
+                        </h3>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                            {kpi.totalCount.toLocaleString()}
+                        </span>
+                    </div>
+                    <div className="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                        {filters.programTypes.length > 0 ? `Across ${filters.programTypes.length} program types` : 'All program types'}
+                    </div>
                 </div>
             </div>
 
-            <div className="relative bg-white dark:from-teal-900/20 dark:to-teal-800/20 transition-transform duration-300 dark:border-teal-700/50 rounded-2xl p-5 shadow-sm">
-                <div className="text-sm font-semibold text-black dark:text-white mb-2">
-                    Avg Disposal Days
+            <div className="relative group overflow-hidden bg-gradient-to-br from-teal-50/80 to-emerald-50/80 dark:from-teal-900/20 dark:to-emerald-900/20 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-teal-600 dark:text-teal-400">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
                 </div>
-                <div className="text-4xl font-bold text-black dark:text-white mb-1">
-                    {kpi.avgDisposalDays?.toFixed(1) || 'N/A'}
-                </div>
-                <div className="text-xs  text-black dark:text-white">
-                    Days to resolve grievances
+                <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="p-2 rounded-lg bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </span>
+                        <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Avg Disposal Time
+                        </h3>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                            {kpi.avgDisposalDays?.toFixed(1) || 'N/A'}
+                        </span>
+                        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">days</span>
+                    </div>
+                    <div className="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                        Average time to resolve
+                    </div>
                 </div>
             </div>
 
-            <div className="relative bg-gradient-to-br bg-white dark:from-blue-900/20 dark:to-blue-800/20 transition-transform duration-300 dark:border-blue-700/50 rounded-2xl p-5 shadow-sm">
-                <div className="text-sm font-semibold text-black dark:text-white mb-2">
-                    Hierarchy Levels
+            <div className="relative group overflow-hidden bg-gradient-to-br from-violet-50/80 to-purple-50/80 dark:from-violet-900/20 dark:to-purple-900/20 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-violet-600 dark:text-violet-400">
+                        <path d="M2 20h.01"></path>
+                        <path d="M7 20v-4"></path>
+                        <path d="M12 20v-8"></path>
+                        <path d="M17 20V8"></path>
+                        <path d="M22 4v16"></path>
+                    </svg>
                 </div>
-                <div className="text-4xl font-bold text-black dark:text-white mb-1">
-                    {waterfallData.length}
-                </div>
-                <div className="text-xs text-black dark:text-white ">
-                    Active processing levels
+                <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="p-2 rounded-lg bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                            </svg>
+                        </span>
+                        <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Hierarchy Levels
+                        </h3>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                            {waterfallData.length}
+                        </span>
+                    </div>
+                    <div className="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+                        Active processing levels
+                    </div>
                 </div>
             </div>
         </div>
@@ -1727,26 +1797,29 @@ export default function LevelWiseComponent() {
                     )}
                 </div>
 
-                <div className="mb-4 flex flex-wrap justify-between items-center gap-4">
+                <div className="mb-6 flex flex-wrap justify-between items-center gap-4 bg-gradient-to-r from-white/80 via-white/60 to-white/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl p-4 rounded-2xl border border-white/50 dark:border-gray-700/50 shadow-sm">
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 mr-1">Program Type:</span>
+                        <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mr-2 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                            Program Type
+                        </span>
                         {PROGRAM_TYPES.map((type) => {
                             const colorMap = {
-                                'GS': 'from-sky-600 to-sky-700',
-                                'TS': 'from-emerald-600 to-emerald-700',
-                                'DS': 'from-teal-600 to-teal-700',
-                                'LF': 'from-orange-500 to-orange-600',
-                                'RLF': 'from-red-500 to-red-600',
-                                'WTC': 'from-rose-500 to-rose-600'
+                                'GS': 'from-blue-500 to-blue-600 shadow-blue-500/20',
+                                'TS': 'from-emerald-500 to-emerald-600 shadow-emerald-500/20',
+                                'DS': 'from-violet-500 to-violet-600 shadow-violet-500/20',
+                                'LF': 'from-amber-500 to-amber-600 shadow-amber-500/20',
+                                'RLF': 'from-rose-500 to-rose-600 shadow-rose-500/20',
+                                'WTC': 'from-cyan-500 to-cyan-600 shadow-cyan-500/20'
                             };
                             const isActive = filters.programTypes.includes(type);
                             return (
                                 <button
                                     key={type}
                                     onClick={() => toggleProgramType(type)}
-                                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                                        ? `bg-gradient-to-r ${colorMap[type]} text-white shadow-sm`
-                                        : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/60 border border-gray-200 dark:border-gray-700'
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${isActive
+                                        ? `bg-gradient-to-r ${colorMap[type]} text-white shadow-lg transform scale-105`
+                                        : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
                                         }`}
                                 >
                                     {type}
@@ -1754,9 +1827,12 @@ export default function LevelWiseComponent() {
                             );
                         })}
                     </div>
-                    <DateRangeFilter />
+                    <div className="flex items-center gap-3">
+                        <div className="h-4 w-px bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
+                        <DateRangeFilter />
+                    </div>
                     {loading && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 rounded-2xl">
+                        <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-black/20 rounded-2xl z-20">
                             <LoadingSpinner />
                         </div>
                     )}
@@ -1910,8 +1986,8 @@ export default function LevelWiseComponent() {
                 )}
 
                 <KPICards kpi={kpi} waterfallData={waterfallData} filters={filters} />
-                <div className='grid lg:grid-cols-1 grid-cols-1 gap-2'>
-                    <div className="relative bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 transition-transform duration-300 dark:border-gray-700/50 rounded-2xl p-5 shadow-sm">
+                <div className='grid lg:grid-cols-1 grid-cols-1 gap-6'>
+                    <div className="relative bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl transition-all duration-300 border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                 Hierarchical Pivot
@@ -1963,7 +2039,7 @@ export default function LevelWiseComponent() {
                         )}
                     </div>
 
-                    <div className="relative bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 transition-transform duration-300 dark:border-gray-700/50 rounded-2xl p-5 shadow-sm mt-5">
+                    <div className="relative bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl transition-all duration-300 border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mt-6">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                 Level-wise Distribution
@@ -1981,8 +2057,8 @@ export default function LevelWiseComponent() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5">
-                        <div className="lg:col-span-2 relative bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 transition-transform duration-300 dark:border-gray-700/50 rounded-2xl p-5 shadow-sm">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                        <div className="lg:col-span-2 relative bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-gray-800/60 dark:to-gray-900/60 backdrop-blur-xl transition-all duration-300 border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                     Subject Breakdown

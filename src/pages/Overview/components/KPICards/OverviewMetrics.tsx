@@ -142,22 +142,27 @@ export default function OverviewMetrics({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="lg:col-span-2 dashboard-card p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group"
+                    transition={{ duration: 0.5 }}
+                    className="lg:col-span-2 relative group overflow-hidden bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300"
                 >
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl -mr-16 -mt-16 transition-opacity group-hover:opacity-100 opacity-60"></div>
+                    {/* Decorative Corner Orbs (Balls) */}
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen animate-pulse-soft"></div>
+                    <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen animate-pulse-soft" style={{ animationDelay: '1s' }}></div>
 
                     <div className="flex-1 space-y-2 z-10 w-full md:w-auto text-center md:text-left">
-                        <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{totalTitle}</h3>
-                        <div className="text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+                        <h3 className="section-subtitle">
+                            {totalTitle}
+                        </h3>
+                        <div className="text-5xl md:text-6xl font-extrabold text-foreground tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/70">
                             {totalValue.toLocaleString()}
                         </div>
-                        <p className="text-sm text-gray-500 font-medium pt-2">
+                        <p className="text-sm text-muted-foreground font-medium pt-2">
                             All time registered grievances across selected regions.
                         </p>
                     </div>
 
                     <div className="w-full md:w-64 h-64 md:h-56 relative z-10 flex-shrink-0 flex justify-center">
-                        <div className="absolute inset-0 bg-gradient-radial from-brand-100/40 to-transparent blur-xl scale-90"></div>
+                        <div className="absolute inset-0 bg-primary/5 blur-2xl scale-90 rounded-full"></div>
                         <KPIRosePieChart
                             onChannelClick={onChannelClick}
                             onContextMenu={onContextMenu}
@@ -177,22 +182,25 @@ export default function OverviewMetrics({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="dashboard-card p-6 md:p-8 flex flex-col justify-between relative overflow-hidden"
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="relative group overflow-hidden bg-gradient-to-br from-orange-50/80 to-amber-50/80 dark:from-orange-900/20 dark:to-amber-900/20 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300"
                 >
-                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-gray-50 to-transparent dark:from-gray-800/20 opacity-50"></div>
+                    {/* Decorative Corner Orbs (Balls) */}
+                    <div className="absolute -top-16 -right-16 w-48 h-48 bg-orange-500/15 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen animate-pulse-soft"></div>
+                    <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-amber-500/15 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen animate-pulse-soft" style={{ animationDelay: '1.5s' }}></div>
 
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{disposalTitle}</h3>
-                            <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full bg-white/80 shadow-sm border border-gray-100 ${trendColor}`}>
+                            <h3 className="section-subtitle">{disposalTitle}</h3>
+                            <div className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-background shadow-sm border border-border ${trendColor}`}>
                                 <TrendIcon size={14} />
                                 {Math.abs(disposalTrend).toFixed(1)}%
                             </div>
                         </div>
 
-                        <div className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tighter mb-1">
+                        <div className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tighter mb-1">
                             {disposalValue.toFixed(1)}
-                            <span className="text-lg text-gray-400 font-medium ml-1">days</span>
+                            <span className="text-lg text-muted-foreground font-medium ml-1">days</span>
                         </div>
                     </div>
 
@@ -202,9 +210,9 @@ export default function OverviewMetrics({
                         </div>
 
                         {disposalTarget > 0 && (
-                            <div className="flex items-center justify-between text-xs font-medium text-gray-500 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50">
+                            <div className="flex items-center justify-between text-xs font-medium text-muted-foreground mt-3 pt-3 border-t border-border">
                                 <span>Target</span>
-                                <span className="text-gray-700 dark:text-gray-300 font-bold">{disposalTarget.toFixed(1)} days</span>
+                                <span className="text-foreground font-bold">{disposalTarget.toFixed(1)} days</span>
                             </div>
                         )}
                     </div>
@@ -236,25 +244,29 @@ export default function OverviewMetrics({
                                 });
                             }}
                             className={`
-                                relative overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 border
+                                relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 border backdrop-blur-sm
                                 ${isSelected
-                                    ? 'bg-brand-500 text-white border-brand-600 shadow-xl shadow-brand-500/30 ring-2 ring-brand-200 dark:ring-brand-700'
-                                    : 'glass border-white/60 hover:border-brand-200 bg-white/60 hover:bg-white/90 shadow-sm hover:shadow-md'
+                                    ? 'bg-gradient-to-br from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-500/20 border-transparent transform scale-105'
+                                    : 'bg-white/70 dark:bg-gray-800/60 border-white/50 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/90 dark:hover:bg-gray-700/80 hover:shadow-md'
                                 }
                             `}
                         >
-                            <div className="flex items-start justify-between mb-3">
-                                <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/20 text-white' : statusColors[item.grievanceStatus] || 'bg-gray-100 text-gray-500'}`}>
+                            {/* Decorative Orb */}
+                            {!isSelected && (
+                                <div className="absolute -top-8 -right-8 w-20 h-20 bg-secondary/50 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            )}
+                            <div className="flex items-start justify-between mb-4">
+                                <div className={`p-2.5 rounded-xl ${isSelected ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
                                     {Icon}
                                 </div>
-                                {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>}
+                                {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-primary-foreground animate-pulse"></div>}
                             </div>
 
                             <div>
-                                <div className={`text-2xl font-bold tracking-tight mb-0.5 ${isSelected ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+                                <div className={`text-2xl font-bold tracking-tight mb-1 ${isSelected ? 'text-primary-foreground' : 'text-foreground'}`}>
                                     {item.count.toLocaleString()}
                                 </div>
-                                <div className={`text-[11px] font-semibold uppercase tracking-wider truncate ${isSelected ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'}`}>
+                                <div className={`text-[10px] uppercase tracking-widest font-semibold truncate ${isSelected ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
                                     {item.grievanceStatus}
                                 </div>
                             </div>

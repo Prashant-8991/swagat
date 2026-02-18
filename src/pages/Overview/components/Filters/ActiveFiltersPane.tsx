@@ -16,15 +16,15 @@ interface ActiveFiltersPaneProps {
 
 function FilterTag({ label, value, onRemove, variant = 'default' }: { label: string; value: string; onRemove: () => void; variant?: string }) {
     const variants: Record<string, string> = {
-        'default': 'bg-gray-50 border-gray-200 text-gray-600',
-        'global': 'bg-gray-900 border-transparent text-white shadow-xl shadow-gray-900/10',
-        'district': 'bg-sky-50 border-sky-100 text-sky-700',
-        'department': 'bg-violet-50 border-violet-100 text-violet-700',
-        'status': 'bg-emerald-50 border-emerald-100 text-emerald-700',
-        'channel': 'bg-indigo-50 border-indigo-100 text-indigo-700',
-        'program': 'bg-orange-50 border-orange-100 text-orange-700',
-        'taluka': 'bg-cyan-50 border-cyan-100 text-cyan-700',
-        'substatus': 'bg-rose-50 border-rose-100 text-rose-700',
+        'default': 'bg-secondary/50 border-secondary text-secondary-foreground',
+        'global': 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20',
+        'district': 'bg-blue-50/80 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300',
+        'department': 'bg-violet-50/80 border-violet-200 text-violet-700 dark:bg-violet-900/30 dark:border-violet-800 dark:text-violet-300',
+        'status': 'bg-emerald-50/80 border-emerald-200 text-emerald-700 dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-300',
+        'channel': 'bg-indigo-50/80 border-indigo-200 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-300',
+        'program': 'bg-orange-50/80 border-orange-200 text-orange-700 dark:bg-orange-900/30 dark:border-orange-800 dark:text-orange-300',
+        'taluka': 'bg-cyan-50/80 border-cyan-200 text-cyan-700 dark:bg-cyan-900/30 dark:border-cyan-800 dark:text-cyan-300',
+        'substatus': 'bg-rose-50/80 border-rose-200 text-rose-700 dark:bg-rose-900/30 dark:border-rose-800 dark:text-rose-300',
     };
 
     return (
@@ -33,11 +33,11 @@ function FilterTag({ label, value, onRemove, variant = 'default' }: { label: str
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className={`inline-flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full text-[11px] font-bold border transition-all duration-200 hover:shadow-sm ${variants[variant] || variants.default}`}
+            className={`inline-flex items-center gap-1.5 pl-2.5 pr-1.5 py-1 rounded-md text-[11px] font-medium border shadow-sm transition-all duration-200 hover:shadow-md ${variants[variant] || variants.default}`}
         >
-            <span className="opacity-70 font-medium uppercase tracking-wider text-[9px]">{label}</span>
-            <span>{value}</span>
-            <button onClick={onRemove} className="p-0.5 rounded-full hover:bg-black/10 transition-colors ml-0.5">
+            <span className="opacity-70 font-bold uppercase tracking-wider text-[9px]">{label}:</span>
+            <span className="font-semibold">{value}</span>
+            <button onClick={onRemove} className="p-0.5 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors ml-1">
                 <X size={12} strokeWidth={2.5} />
             </button>
         </motion.div>
@@ -154,7 +154,7 @@ export default function ActiveFiltersPane({
                         whileTap={{ scale: 0.95 }}
                         whileHover={{ scale: 1.05 }}
                         onClick={clearAllFilters}
-                        className="ml-auto px-4 py-1.5 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-full text-[10px] font-bold transition-all duration-200 shadow-sm flex items-center gap-1.5 uppercase tracking-wide"
+                        className="ml-auto px-4 py-1.5 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 dark:bg-card dark:hover:bg-red-900/20 dark:text-gray-400 dark:hover:text-red-400 dark:border-border rounded-full text-[10px] font-bold transition-all duration-200 shadow-sm flex items-center gap-1.5 uppercase tracking-wide"
                         aria-label="Clear all filters"
                     >
                         <X size={12} strokeWidth={2.5} />

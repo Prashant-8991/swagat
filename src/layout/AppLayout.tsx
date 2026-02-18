@@ -22,12 +22,9 @@ const LayoutContent: React.FC = () => {
           className={`flex-1 transition-all duration-300 ease-in-out ${isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
             } ${isMobileOpen ? "ml-0" : ""}`}
         >
-          <div className={`fixed top-0 right-0 z-[999] glass-strong border-b border-gray-200/20 dark:bg-gray-900/60 dark:border-gray-700/40 transition-all duration-300 ease-in-out ${isExpanded || isHovered ? "lg:left-[290px]" : "lg:left-[90px]"
-            } left-0`}>
-            <AppHeader />
-          </div>
+          <AppHeader />
 
-          <div className="flex flex-col min-h-screen pt-[88px]">
+          <div className="flex flex-col min-h-screen pt-0">
             <div className="flex-1">
               <Outlet />
             </div>
