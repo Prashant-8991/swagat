@@ -8,7 +8,7 @@ import { useGlobalFilters } from '../../hooks/useGlobalFilters';
 import { useAppSelector } from '../../redux/hooks';
 import ContextMenu from '../../components/common/ContextMenu';
 import GlobalFilterButton from '../../components/common/GlobalFilterButton';
-import KPICard from './components/KPICards/KPICard';
+import KPICard, { TotalGrievancesCard } from './components/KPICards/KPICard';
 import KPICardWithTrend from './components/KPICards/KPICardWithTrend';
 import ChartCard from './components/Charts/ChartCard';
 import DistrictTreeMap from './components/Charts/DistrictTreeMap';
@@ -273,6 +273,7 @@ export default function OverviewComponent() {
                             fromDate={fromDate}
                             toDate={toDate}
                         />
+
                         <KPICardWithTrend
                             title="Avg. Disposal Days"
                             value={dashboardData?.kpi?.disposalDaysKpi?.kpiValue || 0}
