@@ -1381,7 +1381,7 @@ function DepartmentBarChart({
  ${params.data.name}
  </div>
  <div style="color: #64748B; font-size: 12px;">
- Count: <strong style="color: #9333EA;">
+ Count: <strong style="color: #7EAEC4;">
  ${params.data.value.toLocaleString()}
  </strong>
  </div>

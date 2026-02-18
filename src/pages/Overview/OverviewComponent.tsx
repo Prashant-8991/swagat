@@ -22,6 +22,8 @@ import DesignationTreeMap from './components/Charts/DesignationTreeMap';
 import { useQuery } from '@apollo/client/react';
 import { GET_TALUKA_DATA, GET_DESIGNATION_DATA } from './graphql/queries';
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 export default function OverviewComponent() {
     const [selectedGrievancesDropdown, setSelectedGrievancesDropdown] = useState<string>("District");
@@ -154,21 +156,34 @@ export default function OverviewComponent() {
         });
     };
 
+    const programTypeColorMap: Record<string, string> = {
+        'GS': 'from-blue-light-400 to-blue-light-500',
+        'TS': 'from-success-500 to-success-600',
+        'DS': 'from-[#7EAEC4] to-[#5E97B0]',
+        'LF': 'from-brand-400 to-brand-500',
+        'RLF': 'from-error-400 to-error-500',
+        'WTC': 'from-[#C78D6B] to-[#A06B4A]'
+    };
+
     if (error) {
         return (
-            <div className="flex items-center justify-center min-h-screen dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 max-w-md">
-                    <h3 className="text-red-800 dark:text-red-300 font-semibold text-lg mb-2">
+            <div className="flex items-center justify-center min-h-screen">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="dashboard-card p-6 max-w-md"
+                >
+                    <h3 className="text-error-700 dark:text-error-300 font-semibold text-base mb-2">
                         Error Loading Dashboard
                     </h3>
-                    <p className="text-red-600 dark:text-red-400 text-sm">{error.message}</p>
-                </div>
+                    <p className="text-error-500 dark:text-error-400 text-sm">{error.message}</p>
+                </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-3 md:p-4 lg:p-5 transition-colors duration-300" >
+        <div className="p-3 md:p-4 lg:p-5 transition-colors duration-300" >
             <ContextMenu
                 visible={contextMenu.visible}
                 x={contextMenu.x}
@@ -181,30 +196,24 @@ export default function OverviewComponent() {
             />
             <div className="mb-4 flex flex-wrap justify-between items-center gap-4">
                 <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 mr-1">
+                    <span className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 mr-1 uppercase tracking-wider">
                         Program Type:
                     </span>
                     {['GS', 'TS', 'DS', 'LF', 'RLF', 'WTC'].map((type) => {
-                        const colorMap = {
-                            'GS': 'from-sky-600 to-sky-700',
-                            'TS': 'from-emerald-600 to-emerald-700',
-                            'DS': 'from-teal-600 to-teal-700',
-                            'LF': 'from-orange-500 to-orange-600',
-                            'RLF': 'from-red-500 to-red-600',
-                            'WTC': 'from-rose-500 to-rose-600'
-                        };
                         const isActive = activeProgramTypes.includes(type);
                         return (
-                            <button
+                            <motion.button
                                 key={type}
+                                whileHover={{ scale: 1.04 }}
+                                whileTap={{ scale: 0.96 }}
                                 onClick={() => handleLocalProgramTypeClick(type)}
-                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                                    ? `bg-gradient-to-r ${colorMap[type]} text-white shadow-sm`
-                                    : 'bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/60 border border-gray-200 dark:border-gray-700'
+                                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${isActive
+                                    ? `bg-gradient-to-r ${programTypeColorMap[type]} text-white shadow-glass-sm`
+                                    : 'glass text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-gray-700/60'
                                     }`}
                             >
                                 {type}
-                            </button>
+                            </motion.button>
                         );
                     })}
                 </div>
@@ -249,7 +258,12 @@ export default function OverviewComponent() {
 
             {loading && (
                 <div className="flex items-center justify-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                        <Loader2 size={32} strokeWidth={1.5} className="text-gray-400" />
+                    </motion.div>
                 </div>
             )}
 

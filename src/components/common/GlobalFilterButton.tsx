@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { useState } from 'react';
-import { HiFunnel } from 'react-icons/hi2';
+import { SlidersHorizontal } from 'lucide-react';
 import { useAppSelector } from '../../redux/hooks';
 import GlobalFilterModal from './GlobalFilterModal';
+import { motion } from 'framer-motion';
 
 export default function GlobalFilterButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,21 +23,27 @@ export default function GlobalFilterButton() {
   return (
     <>
       <div className="fixed bottom-8 right-8 z-40">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
           onClick={() => setIsModalOpen(true)}
           className={`
-            h-14 w-14 rounded-2xl shadow-xl shadow-gray-800/15 flex items-center justify-center transition-all duration-300
-            hover:scale-110 active:scale-95 bg-gray-800 hover:bg-gray-900 text-white
+            h-14 w-14 rounded-2xl shadow-glass-lg flex items-center justify-center transition-all duration-300
+            bg-gray-800 hover:bg-gray-900 text-white relative
           `}
           aria-label="Open Global Filters"
         >
-          <HiFunnel className="w-6 h-6" />
+          <SlidersHorizontal size={20} strokeWidth={1.8} />
           {hasActiveFilters && (
-            <span className="absolute -top-1 -right-1 h-5 w-5 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm animate-pulse">
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -top-1.5 -right-1.5 h-5 w-5 bg-brand-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm"
+            >
               {activeFilterCount}
-            </span>
+            </motion.span>
           )}
-        </button>
+        </motion.button>
       </div>
 
       <GlobalFilterModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

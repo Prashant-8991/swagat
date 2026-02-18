@@ -33,7 +33,7 @@ export default function GrievanceStatusBarChart({
  return `
  <div style="font-weight: 600; margin-bottom: 4px;">${param.name}</div>
  <div>Count: ${param.value.toLocaleString()}</div>
- <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">💡 Tip: Right-click for detailed analysis</div>
+ <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">Right-click for detailed analysis</div>
  `;
  }
  },

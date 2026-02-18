@@ -67,7 +67,7 @@ const MonthlyTimelineChart = memo(function MonthlyTimelineChart({
  }
  });
 
- html += `<div style="color: #94a3b8; font-size: 11px; margin-top: 6px; padding-top: 4px; border-top: 1px solid #e2e8f0;">💡 Right-click to drill through</div>`;
+ html += `<div style="color: #94a3b8; font-size: 11px; margin-top: 6px; padding-top: 4px; border-top: 1px solid #e2e8f0;">Right-click to drill through</div>`;
  html += `</div>`;
  return html;
  },

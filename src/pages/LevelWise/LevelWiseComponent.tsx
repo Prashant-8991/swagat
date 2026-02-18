@@ -540,7 +540,7 @@ function WaterfallChart({ data, chartRef, onLevelClick, onContextMenu, selectedL
  Percentage: <span style="font-weight: 600;">${levelData.percentage.toFixed(2)}%</span>
  </div>
  <div style="color: #8B5CF6; font-size: 11px; margin-top: 6px; font-style: italic;">
- 💡 Right-click to drill through
+ Right-click to drill through
  </div>
  </div>`;
             }

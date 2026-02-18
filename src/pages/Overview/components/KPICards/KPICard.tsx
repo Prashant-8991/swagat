@@ -3,6 +3,7 @@ import KPIRosePieChart from "../../../../charts/KPIRosePieChart";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import React from "react";
+import { motion } from "framer-motion";
 import './kpicards.css'
 interface KPICardProps {
     title: string;
@@ -92,28 +93,25 @@ export default function KPICard(props: KPICardProps) {
     };
 
     if (loading) return (
-        <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/40 rounded-2xl p-8 animate-pulse">
-            <div className="h-6 w-40 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-            <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div className="dashboard-card-static p-6 animate-pulse">
+            <div className="h-5 w-36 bg-gray-200/60 rounded-lg mb-4"></div>
+            <div className="h-9 w-28 bg-gray-200/60 rounded-lg"></div>
         </div>
     );
-    if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
+    if (error) return <p className="p-4 text-error-500 text-sm">Error: {error.message}</p>;
 
     const statuses = data?.dashboardPage1?.grievanceStatuses || [];
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="
-        bg-white/70 dark:bg-gray-800/50
-        backdrop-blur-md
-        rounded-xl
-        border border-gray-200/40 dark:border-gray-700/40
-        shadow-sm hover:shadow-md
-        transition-all duration-300 ease-in-out
-        hover:-translate-y-1
-        p-4
+        dashboard-card
+        p-5
         grid grid-cols-1 md:grid-cols-[1.2fr_1fr]
-        gap-3
+        gap-4
         "
         >
             {/* LEFT SECTION */}
@@ -121,27 +119,34 @@ export default function KPICard(props: KPICardProps) {
 
                 {/* TITLE + VALUE */}
                 <div>
-                    <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <div className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-[0.08em]">
                         {title}
                     </div>
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white mt-1 transition-all duration-300">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                        className="text-3xl font-bold text-gray-800 dark:text-white mt-1.5 tracking-tight"
+                    >
                         {value.toLocaleString()}
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* STATUS LIST */}
                 <div className="space-y-1">
-                    {statuses.map((item: any) => (
-                        <div
+                    {statuses.map((item: any, idx: number) => (
+                        <motion.div
                             key={item.grievanceStatus}
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.25, delay: 0.05 * idx }}
                             className={`
                         flex justify-between items-center text-sm cursor-pointer
-                        px-2.5 py-1.5 rounded-lg
+                        px-3 py-2 rounded-lg
                         transition-all duration-200
-                        transform hover:scale-[1.02]
                         ${item.grievanceStatus === selectedGrievanceStatus
-                                    ? "bg-orange-100/60 dark:bg-orange-900/30 ring-1 ring-orange-300 dark:ring-orange-600"
-                                    : "hover:bg-gray-100/70 dark:hover:bg-gray-700/60"
+                                    ? "bg-brand-50/80 dark:bg-brand-900/20 ring-1 ring-brand-200/60 dark:ring-brand-600/40"
+                                    : "hover:bg-white/50 dark:hover:bg-gray-700/40"
                                 }
                         `}
                             onClick={() => onStatusClick(item.grievanceStatus)}
@@ -154,24 +159,29 @@ export default function KPICard(props: KPICardProps) {
                                 });
                             }}
                         >
-                            <span className="text-gray-700 dark:text-gray-200 font-medium">
+                            <span className="text-gray-600 dark:text-gray-300 font-medium text-[13px]">
                                 {item.grievanceStatus}
                             </span>
 
-                            <span className="font-semibold text-gray-900 dark:text-white text-sm">
+                            <span className="font-semibold text-gray-800 dark:text-white text-sm tabular-nums">
                                 {item.count.toLocaleString()}
-                                <span className="text-gray-400 text-xs ml-1">
+                                <span className="text-gray-400 text-xs ml-1 font-normal">
                                     ({item.percentage.toFixed(1)}%)
                                 </span>
                             </span>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
 
             {/* RIGHT SECTION - CHART */}
-            <div className="flex justify-center items-center animate-fadeIn">
-                <div className="w-[180px] h-[180px] transition-transform duration-300 hover:scale-105">
+            <div className="flex justify-center items-center">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    className="w-[180px] h-[180px]"
+                >
                     <KPIRosePieChart
                         onChannelClick={onChannelClick}
                         onContextMenu={handleChartContextMenu}
@@ -183,93 +193,9 @@ export default function KPICard(props: KPICardProps) {
                         fromDate={fromDate}
                         toDate={toDate}
                     />
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 
 }
-
-
-
-
-
-// export function TotalGrievancesCard(props: KPICardProps) {
-
-//     const {
-//         title,
-//         value,
-//         onStatusClick,
-//         onChannelClick,
-//         onContextMenu,
-//         onContextMenuForStatus,
-//         selectedGrievanceStatus,
-//         selectedDisposeChannel,
-//         district,
-//         departmentName,
-//         disposeChnl,
-//         grievanceStatus,
-//         programTypes,
-//         fromDate,
-//         toDate
-//     } = props;
-
-//     const { loading, data, error } = useQuery(GrievanceStatusDataQuery, {
-//         variables: {
-//             departmentName,
-//             disposeChnl,
-//             district,
-//             grievanceStatus,
-//             programTypes,
-//             fromDate,
-//             toDate
-//         }
-//     });
-//     const statuses = data?.dashboardPage1?.grievanceStatuses || [];
-//     return (
-//         <>
-//             <div className="book">
-//                 <div className="inner">
-//                     <div className="space-y-1">
-//                         {statuses.map((item: any) => (
-//                             <div
-//                                 key={item.grievanceStatus}
-//                                 className={`
-//  flex justify-between items-center text-sm cursor-pointer
-//  px-3 py-2.5 rounded-xl transition-all duration-200
-//  ${item.grievanceStatus === selectedGrievanceStatus
-//                                         ? "bg-orange-50 dark:bg-orange-900/20 ring-1 ring-orange-200 dark:ring-orange-700"
-//                                         : "hover:bg-gray-50 dark:hover:bg-gray-700/50"
-//                                     }
-//  `}
-//                                 onClick={() => onStatusClick(item.grievanceStatus)}
-//                                 onContextMenu={(e: React.MouseEvent) => {
-//                                     e.preventDefault();
-//                                     onContextMenuForStatus({
-//                                         name: item.grievanceStatus,
-//                                         event: { event: e },
-//                                         value: item.count
-//                                     });
-//                                 }}
-//                             >
-//                                 <span className="text-gray-700 font-semibold dark:text-gray-200">
-//                                     {item.grievanceStatus}
-//                                 </span>
-//                                 <span className="font-semibold text-gray-900 dark:text-white">
-//                                     {item.count.toLocaleString()} <span className="text-gray-400 font-normal text-xs ml-1">({item.percentage.toFixed(2)}%)</span>
-//                                 </span>
-//                             </div>
-//                         ))}
-//                     </div>
-
-//                 </div>
-//                 <div className="cover">
-//                     <div className="flex flex-col gap-2">
-//                         <p className="font-extrabold">{props.title}</p>
-//                         <p>{props.value.toLocaleString()}</p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </>
-//     )
-// };

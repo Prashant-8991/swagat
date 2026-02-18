@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -20,12 +20,70 @@
   }
 
   body {
-    @apply relative font-normal font-outfit z-1;
-    background-color: #f8f5f0;
+    @apply relative font-normal z-1;
+    font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+    background: linear-gradient(135deg, #faf8f5 0%, #f5f0ea 50%, #ede5da 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
+
+  /* ===== GLASSMORPHISM UTILITIES ===== */
+  .glass {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-dark {
+    background: rgba(26, 34, 49, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ===== CARD SYSTEM ===== */
+  .dashboard-card {
+    @apply glass rounded-2xl shadow-card transition-all duration-300 ease-out;
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.02),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .dashboard-card:hover {
+    @apply shadow-card-hover;
+    transform: translateY(-2px);
+  }
+
+  .dashboard-card-static {
+    @apply glass rounded-2xl shadow-card;
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.02),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  /* ===== SIDEBAR MENU ===== */
   .menu-item {
     @apply relative flex items-center w-full gap-3 px-3 py-2.5 font-medium rounded-xl text-theme-sm;
   }
@@ -47,7 +105,7 @@
   }
 
   .menu-item-icon-size svg {
-    @apply !size-6;
+    @apply !size-5;
   }
 
   .menu-item-icon-inactive {
@@ -90,6 +148,7 @@
     @apply bg-brand-50 group-hover:bg-brand-100 dark:bg-brand-500/15 dark:group-hover:bg-brand-500/20;
   }
 
+  /* ===== SCROLLBAR ===== */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -109,6 +168,24 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-gray-200 rounded-full dark:bg-gray-700;
+  }
+
+  /* ===== FILTER TAGS ===== */
+  .filter-tag {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200;
+  }
+
+  .filter-tag-remove {
+    @apply ml-0.5 hover:opacity-70 transition-opacity font-bold;
+  }
+
+  /* ===== SECTION HEADINGS ===== */
+  .section-title {
+    @apply text-lg font-semibold text-gray-800 dark:text-white tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider;
   }
 }
 
@@ -231,7 +308,7 @@
 
 .stocks-slider-outer .swiper-button-next.swiper-button-disabled,
 .stocks-slider-outer .swiper-button-prev.swiper-button-disabled {
-  @apply bg-white opacity-50 dark:bg-gray-900;
+  @apply bg-white/60 opacity-50 dark:bg-gray-900;
 }
 
 .stocks-slider-outer .swiper-button-next svg,
@@ -381,14 +458,14 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #465fff;
+  background: #d17a2a;
   @apply !border-brand-500 !bg-brand-500 hover:!border-brand-500 hover:!bg-brand-500;
 }
 
 .flatpickr-day.selected.startRange+.endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange+.endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange+.endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #465fff;
+  box-shadow: -10px 0 0 #d17a2a;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,
@@ -631,8 +708,6 @@ span.flatpickr-weekday,
   @apply !m-0 h-2.5 w-2.5 bg-white opacity-100 shadow-theme-xs duration-200 ease-in-out;
 }
 
-
-
 .form-check-input:checked~span {
   @apply border-[6px] border-brand-500 bg-brand-500 dark:border-brand-500;
 }
@@ -683,8 +758,6 @@ span.flatpickr-weekday,
   @apply opacity-100;
 }
 
-
-
 .card {
   background: var(--surface-card);
   padding: 2rem;
@@ -707,13 +780,13 @@ span.flatpickr-weekday,
   top: 0;
   background-repeat: no-repeat;
   background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%),
-    linear-gradient(#aaaaaa 307px, transparent 0),
-    linear-gradient(#aaaaaa 32px, transparent 0),
-    linear-gradient(#aaaaaa 58px, transparent 0),
-    linear-gradient(#aaaaaa 58px, transparent 0),
-    linear-gradient(#aaaaaa 58px, transparent 0),
-    linear-gradient(#aaaaaa 88px, transparent 0),
-    linear-gradient(#aaaaaa 76px, transparent 0),
+    linear-gradient(#e0d4c5 307px, transparent 0),
+    linear-gradient(#e0d4c5 32px, transparent 0),
+    linear-gradient(#e0d4c5 58px, transparent 0),
+    linear-gradient(#e0d4c5 58px, transparent 0),
+    linear-gradient(#e0d4c5 58px, transparent 0),
+    linear-gradient(#e0d4c5 88px, transparent 0),
+    linear-gradient(#e0d4c5 76px, transparent 0),
     linear-gradient(#ffffff 100%, transparent 0);
   background-size: 264px 100%, 128px 307px, 371px 32px, 100px 58px, 100px 58px, 100px 58px, 371px 88px, 371px 76px, 100% 100%;
   background-position: 0 0, 6px 4px, 140px 4px, 140px 48px, 273px 48px, 411px 48px, 140px 128px, 140px 235px, 0 0;
@@ -724,4 +797,21 @@ span.flatpickr-weekday,
   to {
     background-position: 100% 0, 6px 4px, 140px 4px, 140px 48px, 273px 48px, 411px 48px, 140px 128px, 140px 235px, 0 0;
   }
+}
+
+/* ===== React DatePicker Overrides ===== */
+.react-datepicker-wrapper {
+  width: auto;
+}
+
+.react-datepicker__header {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.react-datepicker {
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+  font-family: 'Inter', sans-serif !important;
 }
