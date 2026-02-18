@@ -9,6 +9,7 @@ import { useAppSelector } from '../../redux/hooks';
 import ContextMenu from '../../components/common/ContextMenu';
 import GlobalFilterButton from '../../components/common/GlobalFilterButton';
 import KPICard, { TotalGrievancesCard } from './components/KPICards/KPICard';
+import OverviewMetrics from './components/KPICards/OverviewMetrics';
 import KPICardWithTrend from './components/KPICards/KPICardWithTrend';
 import ChartCard from './components/Charts/ChartCard';
 import DistrictTreeMap from './components/Charts/DistrictTreeMap';
@@ -194,46 +195,31 @@ export default function OverviewComponent() {
                 onClose={closeContextMenu}
                 onDrillThrough={handleDrillThrough}
             />
-            <div className="mb-4 flex flex-wrap justify-between items-center gap-4">
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 mr-1 uppercase tracking-wider">
-                        Program Type:
-                    </span>
-                    {['GS', 'TS', 'DS', 'LF', 'RLF', 'WTC'].map((type) => {
-                        const isActive = activeProgramTypes.includes(type);
-                        return (
-                            <motion.button
-                                key={type}
-                                whileHover={{ scale: 1.04 }}
-                                whileTap={{ scale: 0.96 }}
-                                onClick={() => handleLocalProgramTypeClick(type)}
-                                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${isActive
-                                    ? `bg-gradient-to-r ${programTypeColorMap[type]} text-white shadow-glass-sm`
-                                    : 'glass text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-gray-700/60'
-                                    }`}
-                            >
-                                {type}
-                            </motion.button>
-                        );
-                    })}
+            {/* Header Section */}
+            <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight font-display mb-1">
+                        Overview
+                    </h1>
+                    <p className="text-sm text-gray-500 font-medium">Welcome back, here's what's happening today.</p>
                 </div>
-                <DateRangeFilter />
+                <div className="flex items-center gap-3">
+                    <DateRangeFilter />
+                </div>
             </div>
 
-            <ProgramTypeFilter
-                activeProgramTypes={activeProgramTypes}
-                onProgramTypeClick={handleLocalProgramTypeClick}
-                selectedDistrict={mergedFilters.district}
-                onDistrictClick={(district) => updateLocalFilter('district', district)}
-                selectedDepartment={mergedFilters.departmentName}
-                onDepartmentClick={(dept) => updateLocalFilter('departmentName', dept)}
-                selectedGrievanceStatus={mergedFilters.grievanceStatus}
-                onGrievanceStatusClick={(status) => updateLocalFilter('grievanceStatus', status)}
-                selectedDisposeChannel={mergedFilters.disposeChnl}
-                onDisposeChannelClick={(channel) => updateLocalFilter('disposeChnl', channel)}
-                hasActiveFilters={hasActiveFilters}
-                onClearAllFilters={clearLocalFilters}
-            />
+            {/* Program Type Filter Bar */}
+            <div className="mb-6 p-1.5 rounded-2xl glass-strong border border-white/60 shadow-sm flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2 px-3 pl-4 border-r border-gray-200/50 pr-4 py-1.5">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        Program
+                    </span>
+                </div>
+                <ProgramTypeFilter
+                    activeProgramTypes={activeProgramTypes}
+                    onProgramTypeClick={handleLocalProgramTypeClick}
+                />
+            </div>
 
             {hasActiveFilters && (
                 <div className="mb-4">
@@ -270,11 +256,15 @@ export default function OverviewComponent() {
             {!loading && dashboardData && (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                        <KPICard
-                            title="Total Grievances"
-                            value={dashboardData?.kpi?.totalCount || 0}
-                            onStatusClick={(status) => handleChartClick('grievanceStatus', status)}
-                            onChannelClick={(channel) => handleChartClick('disposeChnl', channel)}
+                        <OverviewMetrics
+                            totalTitle="Total Grievances"
+                            totalValue={dashboardData?.kpi?.totalCount || 0}
+                            disposalTitle="Avg. Disposal Days"
+                            disposalValue={dashboardData?.kpi?.disposalDaysKpi?.kpiValue || 0}
+                            disposalTrend={dashboardData?.kpi?.disposalDaysKpi?.trendValue || 0}
+                            disposalTarget={dashboardData?.kpi?.disposalDaysKpi?.targetValue || 0}
+                            onStatusClick={(status) => updateLocalFilter('grievanceStatus', status)}
+                            onChannelClick={(channel) => updateLocalFilter('disposeChnl', channel)}
                             onContextMenu={(params) => handleContextMenu(params, "disposeChnl")}
                             onContextMenuForStatus={(params) => handleContextMenu(params, "grievanceStatus")}
                             selectedGrievanceStatus={mergedFilters.grievanceStatus}
@@ -286,13 +276,6 @@ export default function OverviewComponent() {
                             programTypes={mergedFilters.programTypes}
                             fromDate={fromDate}
                             toDate={toDate}
-                        />
-
-                        <KPICardWithTrend
-                            title="Avg. Disposal Days"
-                            value={dashboardData?.kpi?.disposalDaysKpi?.kpiValue || 0}
-                            trendValue={dashboardData?.kpi?.disposalDaysKpi?.trendValue || 0}
-                            targetValue={dashboardData?.kpi?.disposalDaysKpi?.targetValue || 0}
                         />
                     </div>
 

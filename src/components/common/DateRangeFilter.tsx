@@ -68,14 +68,14 @@ const DateRangeFilter: React.FC = () => {
         setStartDate(date);
         dispatch(setDateRange({
             fromDate: formatDateForAPI(date),
-            toDate: formatDateForAPI(endDate)
+            toDate: formatDateForAPI(date && endDate ? endDate : null)
         }));
     };
 
     const handleToDateChange = (date: Date | null) => {
         setEndDate(date);
         dispatch(setDateRange({
-            fromDate: formatDateForAPI(startDate),
+            fromDate: formatDateForAPI(date && startDate ? startDate : null),
             toDate: formatDateForAPI(date)
         }));
     };
@@ -88,65 +88,61 @@ const DateRangeFilter: React.FC = () => {
 
     return (
         <>
-            <div className="flex items-center justify-end gap-3 flex-wrap z-200">
+            <div className="flex items-center justify-end gap-3 flex-wrap z-20">
                 <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className='p-2 px-3.5 gap-2.5 glass rounded-xl flex justify-center items-center transition-all duration-200 
- cursor-pointer text-gray-600 hover:text-gray-800 dark:text-gray-300'
+                    className='h-10 px-4 glass rounded-xl flex items-center gap-2 transition-all duration-200 
+ cursor-pointer text-gray-500 hover:text-gray-900 border border-white/50 hover:border-brand-200 hover:bg-white/90 shadow-sm'
                     onClick={openModal}
                     title="Global Search (Ctrl + K)"
                 >
-                    <Search size={16} strokeWidth={1.8} />
-                    <span className="text-xs font-medium text-gray-400">Ctrl + K</span>
+                    <Search size={16} strokeWidth={2} />
+                    <span className="text-xs font-semibold tracking-wide">Ctrl + K</span>
                 </motion.div>
 
-                <CalendarDays size={16} strokeWidth={1.8} className="text-gray-400 dark:text-gray-500" />
+                <div className="h-6 w-px bg-gray-300/50 mx-1"></div>
 
-                <div className="flex items-center gap-2">
-                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap tracking-wide">
-                        From:
-                    </label>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={handleFromDateChange}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="DD-MM-YYYY"
-                        className="px-3 py-2 border border-gray-200/50 dark:border-gray-600 rounded-lg 
- glass text-gray-800 dark:text-white text-xs font-medium
- focus:ring-1 focus:ring-brand-300/50 focus:border-brand-300/50
- transition-all duration-200 w-[120px] cursor-pointer"
-                        wrapperClassName="date-picker-wrapper"
-                        calendarClassName="dark:bg-gray-800 dark:border-gray-600"
-                        selectsStart
-                        startDate={startDate}
-                        endDate={endDate}
-                    />
-                </div>
+                <div className="flex items-center gap-2 bg-white/50 p-1 rounded-xl border border-white/60 shadow-glass">
+                    <div className="flex items-center relative group">
+                        <div className="absolute left-3 text-gray-400 group-hover:text-brand-500 transition-colors pointer-events-none">
+                            <CalendarDays size={14} />
+                        </div>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={handleFromDateChange}
+                            minDate={minDate}
+                            maxDate={maxDate}
+                            dateFormat="dd MMM yyyy"
+                            placeholderText="Start Date"
+                            className="pl-9 pr-3 py-2 bg-transparent text-xs font-bold text-gray-700 placeholder-gray-400 focus:outline-none w-[110px] cursor-pointer"
+                            wrapperClassName="date-picker-wrapper"
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+                        />
+                    </div>
 
-                <div className="flex items-center gap-2">
-                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap tracking-wide">
-                        To:
-                    </label>
-                    <DatePicker
-                        selected={endDate}
-                        onChange={handleToDateChange}
-                        minDate={startDate || minDate}
-                        maxDate={maxDate}
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="DD-MM-YYYY"
-                        className="px-3 py-2 border border-gray-200/50 dark:border-gray-600 rounded-lg 
- glass text-gray-800 dark:text-white text-xs font-medium
- focus:ring-1 focus:ring-brand-300/50 focus:border-brand-300/50
- transition-all duration-200 w-[120px] cursor-pointer"
-                        wrapperClassName="date-picker-wrapper"
-                        calendarClassName="dark:bg-gray-800 dark:border-gray-600"
-                        selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                    />
+                    <span className="text-gray-300 select-none">/</span>
+
+                    <div className="flex items-center relative group">
+                        <div className="absolute left-3 text-gray-400 group-hover:text-brand-500 transition-colors pointer-events-none">
+                            <CalendarDays size={14} />
+                        </div>
+                        <DatePicker
+                            selected={endDate}
+                            onChange={handleToDateChange}
+                            minDate={startDate || minDate}
+                            maxDate={maxDate}
+                            dateFormat="dd MMM yyyy"
+                            placeholderText="End Date"
+                            className="pl-9 pr-3 py-2 bg-transparent text-xs font-bold text-gray-700 placeholder-gray-400 focus:outline-none w-[110px] cursor-pointer"
+                            wrapperClassName="date-picker-wrapper"
+                            selectsEnd
+                            startDate={startDate}
+                            endDate={endDate}
+                        />
+                    </div>
                 </div>
 
                 {(startDate || endDate) && (
@@ -155,14 +151,10 @@ const DateRangeFilter: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         whileTap={{ scale: 0.92 }}
                         onClick={handleClearDates}
-                        className="flex items-center gap-1 px-2.5 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 
- glass border border-gray-200/40 dark:border-gray-700
- rounded-lg hover:text-gray-700 dark:hover:text-gray-200 
- transition-all duration-200"
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-error-50 text-error-500 hover:bg-error-100 hover:text-error-600 transition-colors"
                         title="Clear date filters"
                     >
-                        <X size={14} strokeWidth={2} />
-                        Clear
+                        <X size={14} strokeWidth={2.5} />
                     </motion.button>
                 )}
             </div>

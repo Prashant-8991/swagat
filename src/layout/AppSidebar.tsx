@@ -3,9 +3,6 @@ import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { Link, useLocation } from "react-router";
 import LogoImage from '../assets/images/logo/swagat.png'
 
-import {
-    HorizontaLDots,
-} from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import {
     BarChart3,
@@ -17,6 +14,7 @@ import {
     CalendarDays,
     Filter,
     MoreHorizontal,
+    LayoutDashboard
 } from "lucide-react";
 import { useAppSelector } from "../redux/hooks";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,7 +28,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
     {
-        icon: <BarChart3 size={20} strokeWidth={1.8} />,
+        icon: <LayoutDashboard size={20} strokeWidth={1.8} />,
         name: "Overview",
         path: "/overview",
     },
@@ -189,62 +187,61 @@ const AppSidebar: React.FC = () => {
 
     const renderMenuItems = useCallback(
         (items: NavItem[], menuType: "main" | "others") => (
-            <ul className="flex flex-col gap-1">
+            <ul className="flex flex-col gap-2">
                 {items.map((nav, index) => (
                     <li key={nav.name}>
                         {nav.subItems ? (
                             <button
                                 onClick={() => handleSubmenuToggle(index, menuType)}
-                                className={`menu-item group rounded-xl transition-all duration-200 ${openSubmenu?.type === menuType && openSubmenu?.index === index
-                                    ? "bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 shadow-glass-sm"
-                                    : "text-gray-600 hover:bg-white/40 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-200"
-                                    } cursor-pointer ${!isExpanded && !isHovered
-                                        ? "lg:justify-center"
-                                        : "lg:justify-start"
+                                className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index
+                                    ? "bg-white shadow-sm"
+                                    : "menu-item-inactive"
+                                    } ${!isExpanded && !isHovered
+                                        ? "justify-center px-2"
+                                        : "justify-start"
                                     }`}
                             >
                                 <span
-                                    className={`menu-item-icon-size ${openSubmenu?.type === menuType && openSubmenu?.index === index
-                                        ? "text-brand-600 dark:text-brand-400"
-                                        : "text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"
+                                    className={`transition-colors duration-200 ${openSubmenu?.type === menuType && openSubmenu?.index === index
+                                        ? "text-brand-600"
+                                        : "text-gray-400 group-hover:text-gray-600"
                                         }`}
                                 >
                                     {nav.icon}
                                 </span>
                                 {(isExpanded || isHovered || isMobileOpen) && (
-                                    <span className="menu-item-text text-[13px] font-medium tracking-tight">{nav.name}</span>
-                                )}
-                                {(isExpanded || isHovered || isMobileOpen) && (
-                                    <ChevronDown
-                                        size={16}
-                                        strokeWidth={1.8}
-                                        className={`ml-auto transition-transform duration-200 ${openSubmenu?.type === menuType &&
-                                            openSubmenu?.index === index
-                                            ? "rotate-180 text-brand-500"
-                                            : "text-gray-400"
-                                            }`}
-                                    />
+                                    <>
+                                        <span className={`text-[13px] font-medium tracking-tight whitespace-nowrap ${openSubmenu?.type === menuType && openSubmenu?.index === index ? 'text-gray-900' : ''}`}>{nav.name}</span>
+                                        <ChevronDown
+                                            size={16}
+                                            className={`ml-auto transition-transform duration-300 ${openSubmenu?.type === menuType &&
+                                                openSubmenu?.index === index
+                                                ? "rotate-180 text-brand-500"
+                                                : "text-gray-400"
+                                                }`}
+                                        />
+                                    </>
                                 )}
                             </button>
                         ) : (
                             nav.path && (
                                 <Link
                                     to={nav.path}
-                                    className={`menu-item group rounded-xl transition-all duration-200 ${isActive(nav.path)
-                                        ? "bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 shadow-glass-sm"
-                                        : "text-gray-600 hover:bg-white/40 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-200"
-                                        }`}
+                                    className={`menu-item group ${isActive(nav.path)
+                                        ? "menu-item-active"
+                                        : "menu-item-inactive"
+                                        } ${!isExpanded && !isHovered ? "justify-center px-2" : ""}`}
                                 >
                                     <span
-                                        className={`menu-item-icon-size ${isActive(nav.path)
-                                            ? "text-brand-600 dark:text-brand-400"
-                                            : "text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"
+                                        className={`transition-colors duration-200 ${isActive(nav.path)
+                                            ? "text-white"
+                                            : "text-gray-400 group-hover:text-gray-600"
                                             }`}
                                     >
                                         {nav.icon}
                                     </span>
                                     {(isExpanded || isHovered || isMobileOpen) && (
-                                        <span className="menu-item-text text-[13px] font-medium tracking-tight">{nav.name}</span>
+                                        <span className="text-[14px] font-medium tracking-tight whitespace-nowrap">{nav.name}</span>
                                     )}
                                 </Link>
                             )
@@ -254,48 +251,25 @@ const AppSidebar: React.FC = () => {
                                 ref={(el) => {
                                     subMenuRefs.current[`${menuType}-${index}`] = el;
                                 }}
-                                className="overflow-hidden transition-all duration-300"
+                                className="overflow-hidden transition-all duration-300 ease-in-out"
                                 style={{
                                     height:
                                         openSubmenu?.type === menuType && openSubmenu?.index === index
                                             ? `${subMenuHeight[`${menuType}-${index}`]}px`
                                             : "0px",
-                                    willChange: openSubmenu?.type === menuType && openSubmenu?.index === index ? 'height' : 'auto',
                                 }}
                             >
-                                <ul className="mt-1.5 space-y-0.5 ml-9">
+                                <ul className="mt-2 space-y-1 ml-4 border-l border-gray-200 pl-4 py-1">
                                     {nav.subItems.map((subItem) => (
                                         <li key={subItem.name}>
                                             <Link
                                                 to={subItem.path}
-                                                className={`menu-dropdown-item rounded-lg transition-all duration-200 text-[13px] ${isActive(subItem.path)
-                                                    ? "bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400"
-                                                    : "text-gray-500 hover:bg-white/30 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-200"
+                                                className={`block rounded-lg px-3 py-2 text-[13px] transition-all duration-200 font-medium ${isActive(subItem.path)
+                                                    ? "bg-brand-50 text-brand-700"
+                                                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                                     }`}
                                             >
                                                 {subItem.name}
-                                                <span className="flex items-center gap-1 ml-auto">
-                                                    {subItem.new && (
-                                                        <span
-                                                            className={`ml-auto ${isActive(subItem.path)
-                                                                ? "bg-brand-100 dark:bg-brand-500/20"
-                                                                : "bg-gray-100 group-hover:bg-gray-200 dark:bg-gray-700 dark:group-hover:bg-gray-600"
-                                                                } menu-dropdown-badge`}
-                                                        >
-                                                            new
-                                                        </span>
-                                                    )}
-                                                    {subItem.pro && (
-                                                        <span
-                                                            className={`ml-auto ${isActive(subItem.path)
-                                                                ? "bg-brand-100 dark:bg-brand-500/20"
-                                                                : "bg-gray-100 group-hover:bg-gray-200 dark:bg-gray-700 dark:group-hover:bg-gray-600"
-                                                                } menu-dropdown-badge`}
-                                                        >
-                                                            pro
-                                                        </span>
-                                                    )}
-                                                </span>
                                             </Link>
                                         </li>
                                     ))}
@@ -316,172 +290,96 @@ const AppSidebar: React.FC = () => {
 
     return (
         <aside
-            className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 glass-strong dark:bg-gray-900/70 dark:border-gray-800/60 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200/20
+            className={`fixed flex flex-col top-0 left-0 h-screen transition-all duration-300 cubic-bezier(0.25, 1, 0.5, 1) z-50
+            glass-strong border-r border-white/40
  ${isExpanded || isMobileOpen
                     ? "w-[290px]"
                     : isHovered
                         ? "w-[290px]"
-                        : "w-[90px]"
+                        : "w-[80px]"
                 }
  ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
  lg:translate-x-0`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div
-                className={`py-8 flex justify-center`}
-            >
+            {/* Logo Area */}
+            <div className={`h-[88px] flex items-center justify-center border-b border-gray-100/50`}>
                 <Link to="/">
                     {shouldShowFullContent ? (
-                        <>
-                            <motion.img
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3 }}
-                                className="dark:hidden"
-                                src={LogoImage}
-                                alt="Logo"
-                                width={150}
-                                height={40}
-                            />
-                            <motion.img
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3 }}
-                                className="hidden dark:block"
-                                src={LogoImage}
-                                alt="Logo"
-                                width={150}
-                                height={40}
-                            />
-                        </>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <img src={LogoImage} alt="Swagat Logo" className="h-12 w-auto object-contain" />
+                        </motion.div>
                     ) : (
-                        <img
-                            src={LogoImage}
-                            alt="Logo"
-                            width={80}
-                            height={80}
-                        />
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            <img src={LogoImage} alt="S" className="h-10 w-10 object-contain" />
+                        </motion.div>
                     )}
                 </Link>
             </div>
-            <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-                <nav className="mb-6">
-                    <div className="flex flex-col gap-4">
-                        <div>
-                            <h2
-                                className={`mb-3 text-[10px] uppercase flex leading-[20px] text-gray-400 font-semibold tracking-[0.12em] ${!isExpanded && !isHovered
-                                    ? "lg:justify-center"
-                                    : "justify-start"
-                                    }`}
-                            >
-                                {shouldShowFullContent ? (
-                                    "Menu"
-                                ) : (
-                                    <MoreHorizontal size={18} strokeWidth={1.5} className="text-gray-400" />
-                                )}
-                            </h2>
-                            {renderMenuItems(navItems, "main")}
+
+            {/* Content */}
+            <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar py-6 px-4">
+                <nav className="flex-1">
+                    <div className="mb-6">
+                        <div className={`mb-4 px-2 text-xs font-bold uppercase tracking-wider text-gray-400 ${!shouldShowFullContent && 'text-center'}`}>
+                            {shouldShowFullContent ? 'Main Menu' : '•••'}
                         </div>
+                        {renderMenuItems(navItems, "main")}
                     </div>
                 </nav>
-            </div>
 
-            <div className="mt-auto mb-6 space-y-3">
-                {(fromDate || toDate) && shouldShowFullContent && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="relative overflow-hidden rounded-xl border border-green-200/40 dark:border-green-700/40 glass p-4"
-                    >
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-100/30 dark:bg-green-900/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-                        <div className="relative z-10">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Filter size={14} className="text-green-600 dark:text-green-400" />
-                                <span className="text-[10px] font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">
-                                    Active Filter
-                                </span>
+                {/* Bottom Widgets */}
+                <div className="space-y-4 mt-auto">
+                    {(fromDate || toDate) && shouldShowFullContent && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 p-4 rounded-xl shadow-sm"
+                        >
+                            <div className="flex items-center gap-2 mb-2 text-green-700">
+                                <Filter size={14} />
+                                <span className="text-xs font-bold uppercase">Active Filter</span>
                             </div>
                             <div className="space-y-1">
-                                {fromDate && (
-                                    <p className="text-xs text-gray-600 dark:text-gray-300">
-                                        <span className="font-semibold">From:</span> {new Date(fromDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                    </p>
-                                )}
-                                {toDate && (
-                                    <p className="text-xs text-gray-600 dark:text-gray-300">
-                                        <span className="font-semibold">To:</span> {new Date(toDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                    </p>
-                                )}
+                                {fromDate && <div className="text-xs text-green-800"><span className="opacity-60">From:</span> {new Date(fromDate).toLocaleDateString('en-GB')}</div>}
+                                {toDate && <div className="text-xs text-green-800"><span className="opacity-60">To:</span> {new Date(toDate).toLocaleDateString('en-GB')}</div>}
                             </div>
-                        </div>
-                    </motion.div>
-                )}
+                        </motion.div>
+                    )}
 
-                {(fromDate || toDate) && !shouldShowFullContent && (
-                    <div className="flex justify-center">
-                        <div className="relative group">
-                            <div className="w-12 h-12 rounded-xl border border-green-200/40 dark:border-green-700/40 glass flex items-center justify-center">
-                                <div className="relative">
-                                    <Filter size={20} className="text-green-600 dark:text-green-400" />
-                                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
-                                </div>
-                            </div>
-                            <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-800 dark:bg-gray-700 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
-                                <div className="font-semibold mb-1">Active Date Filter</div>
-                                {fromDate && <div>From: {new Date(fromDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>}
-                                {toDate && <div>To: {new Date(toDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>}
-                                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-800 dark:border-r-gray-700"></div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {shouldShowFullContent ? (
-                    <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.1 }}
-                        className="relative overflow-hidden rounded-xl border border-gray-200/30 dark:border-gray-700/30 glass p-4"
-                    >
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-blue-100/20 dark:bg-blue-900/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-                        <div className="relative z-10">
-                            <div className="flex items-center gap-2 mb-2">
-                                <CalendarDays size={14} className="text-gray-500 dark:text-gray-400" />
-                                <span className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    As On Date
+                    {shouldShowFullContent ? (
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-xl shadow-sm relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 -mt-2 -mr-2 w-16 h-16 bg-blue-500/10 rounded-full blur-2xl"></div>
+                            <div className="relative z-10">
+                                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider block mb-1">
+                                    Last Updated
                                 </span>
+                                {loading ? (
+                                    <div className="h-6 w-24 bg-blue-200/50 rounded animate-pulse"></div>
+                                ) : (
+                                    <p className="text-lg font-bold text-gray-800 font-outfit">
+                                        {asonDate || 'N/A'}
+                                    </p>
+                                )}
                             </div>
-                            {loading ? (
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3.5 h-3.5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                                    <span className="text-sm text-gray-400 dark:text-gray-400">Loading...</span>
-                                </div>
-                            ) : (
-                                <p className="text-base font-bold text-gray-800 dark:text-white tracking-tight">
-                                    {asonDate || 'N/A'}
-                                </p>
-                            )}
                         </div>
-                    </motion.div>
-                ) : (
-                    <div className="flex justify-center">
-                        <div className="relative group">
-                            <div className="w-12 h-12 rounded-xl border border-gray-200/30 dark:border-gray-700/30 glass flex items-center justify-center">
-                                <CalendarDays size={20} className="text-gray-500 dark:text-gray-400" />
+                    ) : (
+                        <div className="flex justify-center" title={asonDate || "Date"}>
+                            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                                <CalendarDays size={18} />
                             </div>
-                            {!loading && asonDate && (
-                                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-800 dark:bg-gray-700 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
-                                    {asonDate}
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-800 dark:border-r-gray-700"></div>
-                                </div>
-                            )}
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-
         </aside>
     );
 };

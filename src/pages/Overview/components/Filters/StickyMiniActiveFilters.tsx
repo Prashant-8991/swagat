@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FilterState } from '../../types';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { setgSwagatData } from '../../../../redux/features/globalfilters';
-import { X } from 'lucide-react';
+import { X, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface StickyMiniActiveFiltersProps {
@@ -16,10 +16,11 @@ interface StickyMiniActiveFiltersProps {
 
 function MiniTag({ label, value, onRemove, dark = false }: { label: string; value: string; onRemove: () => void; dark?: boolean }) {
     return (
-        <span className={`px-2.5 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1.5 ${dark ? 'bg-gray-800 text-white' : 'bg-white/60 text-gray-700 border border-gray-200/40'}`}>
-            {label}: <strong>{value}</strong>
-            <button onClick={onRemove} className="hover:opacity-70 ml-0.5">
-                <X size={10} strokeWidth={2.5} />
+        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 border shadow-sm ${dark ? 'bg-gray-800 text-white border-gray-700' : 'bg-white text-gray-700 border-gray-200'}`}>
+            <span className="opacity-60 font-medium uppercase">{label}</span>
+            <span>{value}</span>
+            <button onClick={onRemove} className="hover:text-red-500 transition-colors ml-0.5">
+                <X size={10} strokeWidth={3} />
             </button>
         </span>
     );
@@ -65,22 +66,25 @@ export default function StickyMiniActiveFilters({
         <AnimatePresence>
             {showSticky && (
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="fixed top-0 left-0 w-full flex justify-center z-[9999] pointer-events-none"
-                    style={{ top: '70px', paddingTop: '8px' }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="fixed top-0 left-0 w-full flex justify-center z-[90] pointer-events-none"
+                    style={{ top: '88px' }}
                 >
-                    <div className="pointer-events-auto max-w-[600px] w-full glass-strong rounded-xl px-4 py-2 flex items-center gap-2 shadow-glass">
-                        <span className="text-[10px] font-semibold text-gray-500 dark:text-gray-300 mr-1.5 uppercase tracking-wider">Filters:</span>
-                        <div className="flex flex-wrap gap-1">
+                    <div className="pointer-events-auto max-w-4xl w-full mx-4 glass-strong rounded-full px-2 py-1.5 flex items-center gap-2 shadow-2xl border border-white/40 ring-1 ring-black/5">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0">
+                            <Filter size={14} strokeWidth={2.5} />
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5 items-center overflow-x-auto no-scrollbar py-1 px-1">
                             {globalFilters?.districts?.length > 0 && globalFilters.districts.map((district) => (
-                                <MiniTag key={district} label="District" value={district} dark onRemove={() => clearGlobalFilter('districts')} />
+                                <MiniTag key={district} label="Dist" value={district} dark onRemove={() => clearGlobalFilter('districts')} />
                             ))}
 
                             {globalFilters?.talukas?.length > 0 && globalFilters.talukas.map((taluka) => (
-                                <MiniTag key={taluka} label="Taluka" value={taluka} dark onRemove={() => {
+                                <MiniTag key={taluka} label="Tal" value={taluka} dark onRemove={() => {
                                     const newTalukas = globalFilters.talukas.filter(t => t !== taluka);
                                     dispatch(setgSwagatData({ ...globalFilters, talukas: newTalukas }));
                                 }} />
@@ -91,49 +95,51 @@ export default function StickyMiniActiveFilters({
                             ))}
 
                             {globalFilters?.grievanceStatuses?.length > 0 && globalFilters.grievanceStatuses.map((status) => (
-                                <MiniTag key={status} label="Status" value={status} dark onRemove={() => clearGlobalFilter('grievanceStatuses')} />
+                                <MiniTag key={status} label="Stat" value={status} dark onRemove={() => clearGlobalFilter('grievanceStatuses')} />
                             ))}
 
                             {globalFilters?.subStatuses?.length > 0 && globalFilters.subStatuses.map((status) => (
-                                <MiniTag key={status} label="Sub Status" value={status} dark onRemove={() => {
+                                <MiniTag key={status} label="Sub" value={status} dark onRemove={() => {
                                     const newStatuses = globalFilters.subStatuses.filter(s => s !== status);
                                     dispatch(setgSwagatData({ ...globalFilters, subStatuses: newStatuses }));
                                 }} />
                             ))}
 
                             {globalFilters?.disposeChannels?.length > 0 && globalFilters.disposeChannels.map((channel) => (
-                                <MiniTag key={channel} label="Channel" value={channel} dark onRemove={() => clearGlobalFilter('disposeChannels')} />
+                                <MiniTag key={channel} label="Chnl" value={channel} dark onRemove={() => clearGlobalFilter('disposeChannels')} />
                             ))}
 
                             {filters.district && (
-                                <MiniTag label="District" value={filters.district} onRemove={() => updateFilter('district', null)} />
+                                <MiniTag label="Dist" value={filters.district} onRemove={() => updateFilter('district', null)} />
                             )}
                             {filters.departmentName && (
                                 <MiniTag label="Dept" value={filters.departmentName} onRemove={() => updateFilter('departmentName', null)} />
                             )}
                             {filters.disposeChnl && (
-                                <MiniTag label="Channel" value={filters.disposeChnl} onRemove={() => updateFilter('disposeChnl', null)} />
+                                <MiniTag label="Chnl" value={filters.disposeChnl} onRemove={() => updateFilter('disposeChnl', null)} />
                             )}
                             {filters.grievanceStatus && (
-                                <MiniTag label="Status" value={filters.grievanceStatus} onRemove={() => updateFilter('grievanceStatus', null)} />
+                                <MiniTag label="Stat" value={filters.grievanceStatus} onRemove={() => updateFilter('grievanceStatus', null)} />
                             )}
                             {activeProgramTypes.length > 0 && activeProgramTypes.map((type) => (
                                 <MiniTag key={type} label="Prog" value={type} onRemove={() => handleProgramTypeClick(type)} />
                             ))}
                             {filters.taluka && (
-                                <MiniTag label="Taluka" value={filters.taluka} onRemove={() => updateFilter('taluka', null)} />
+                                <MiniTag label="Tal" value={filters.taluka} onRemove={() => updateFilter('taluka', null)} />
                             )}
                             {filters.subStatusName && (
-                                <MiniTag label="SubStatus" value={filters.subStatusName} onRemove={() => updateFilter('subStatusName', null)} />
+                                <MiniTag label="Sub" value={filters.subStatusName} onRemove={() => updateFilter('subStatusName', null)} />
                             )}
                         </div>
+
+                        <div className="flex-1"></div>
+
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             onClick={clearAllFilters}
-                            className="ml-auto px-2 py-1 rounded-lg bg-gray-800 hover:bg-gray-900 text-white text-[10px] font-medium transition-all flex items-center gap-1"
+                            className="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-full text-[10px] font-bold transition-colors flex-shrink-0"
                         >
-                            <X size={10} strokeWidth={2.5} />
-                            Clear
+                            Clear All
                         </motion.button>
                     </div>
                 </motion.div>
